@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face-IT Smart Attendance</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+    <h1>Face-IT</h1>
+    <button class="settings-btn" onclick="goToSettings()">⚙️</button>
+</header>
+
+<main class="dashboard">
+
+    <!-- PROFESSOR INFO -->
+    <section class="professor-card card">
+        <img src="https://i.imgur.com/8Km9tLL.png" alt="Professor">
+        <div class="prof-info">
+            <h2>
+                Dr. William G. Johnson
+                <button class="alerts-btn" onclick="goToAlerts()">View Alerts</button>
+            </h2>
+            <p>Capstone ICTW · Section 004</p>
+        </div>
+    </section>
+
+
+    <!-- CONTENT GRID -->
+    <section class="content">
+
+        <!-- LEFT COLUMN -->
+        <div class="left">
+
+            <!-- CLASS SELECT -->
+            <div class="card">
+                <h3>Class Selection</h3>
+                <select class="class-select">
+                    <option>Data Science 101</option>
+                    <option>Capstone ICTW 004</option>
+                </select>
+            </div>
+
+            <!-- ROSTER -->
+            <div class="card">
+                <h3>Class Roster</h3>
+                <div class="roster">
+                    <div class="student">
+                        <span>Jordan Kim</span>
+                        <span>002481923</span>
+                        <select><option>Present</option><option>Absent</option></select>
+                    </div>
+                    <div class="student">
+                        <span>Maya Patel</span>
+                        <span>002735642</span>
+                        <select><option>Present</option><option>Absent</option></select>
+                    </div>
+                    <div class="student">
+                        <span>Ethan Williams</span>
+                        <span>002497658</span>
+                        <select><option>Absent</option><option>Present</option></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY LOG -->
+            <div class="card">
+                <h3>Activity Log</h3>
+                <div class="log">
+                    <p>[9:01 AM] Attendance — Jordan Kim (0.96)</p>
+                    <p>[9:03 AM] Attendance — Maya Patel (0.92)</p>
+                    <p class="alert">[9:07 AM] Alert — Low confidence (0.75)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="right">
+
+            <!-- CHART -->
+            <div class="card">
+                <h3>Class Attendance</h3>
+                <canvas id="attendanceChart"></canvas>
+            </div>
+
+            <!-- CAMERA STATUS -->
+            <div class="card camera">
+                <h3>Camera Status</h3>
+                <p class="active">● Active</p>
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+* {
+    box-sizing: border-box;
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #eef2f7, #f9fbff);
+}
+
+/* TOP BAR */
+.top-bar {
+    background: linear-gradient(to right, #4f8cff, #6c63ff);
+    color: white;
+    padding: 18px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings-btn {
+    background: white;
+    border: none;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* DASHBOARD */
+.dashboard {
+    padding: 30px;
+}
+
+/* CARDS */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+}
+
+/* PROFESSOR */
+.professor-card {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.professor-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+/* GRID */
+.content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.left, .right {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* SELECT */
+.class-select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* ROSTER */
+.roster {
+    max-height: 220px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.student {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* LOG */
+.log {
+    max-height: 160px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+.log .alert {
+    color: #e63946;
+    font-weight: bold;
+}
+
+/* CAMERA */
+.camera .active {
+    color: green;
+    font-weight: bold;
+    font-size: 18px;
+}
+.prof-info h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alerts-btn {
+    background: #ffe8e8;
+    color: #e63946;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.alerts-btn:hover {
+    background: #ffd1d1;
+}
+
+.setting-row {
+    margin-top: 15px;
+}
