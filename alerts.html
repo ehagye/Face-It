@@ -2,27 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Face-IT · Review Alerts</title>
+    <title>Face-IT · Alerts</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="dark-bg">
 
 <header class="top-bar">
     <h1>Face-IT</h1>
-    <button class="settings-btn" onclick="goHome()">← Back</button>
+    <nav class="nav-actions">
+       <button onclick="goToDashboard()">Dashboard</button>
+        <button class="active-nav">Alerts</button>
+        <button onclick="goToSettings()">Settings</button>
+        <button onclick="logout()">Log Out</button>
+    </nav>
 </header>
 
 <main class="dashboard">
-    <section class="card">
+    <section class="glass-card">
         <h2>Review Alerts</h2>
 
         <div class="log">
-            <p class="alert">[9:07 AM] Marcus Johnson — Low confidence match (0.75)</p>
-            <p class="alert">[9:12 AM] Unknown face detected — Seat View A</p>
+            <p class="warn">[9:07] Marcus Johnson — Low confidence (0.75)</p>
+            <p class="warn">[9:12] Unknown face detected — Camera A</p>
         </div>
     </section>
 </main>
 
 <script src="script.js"></script>
+<script>protectPage();</script>
 </body>
 </html>

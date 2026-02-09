@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face-IT · Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-bg centered">
+
+<div class="auth-card">
+    <h2>Professor Login</h2>
+
+    <form onsubmit="login(event)">
+        <input id="email" type="email" placeholder="professor@faceit.edu" required>
+        <input id="password" type="password" placeholder="Password" required>
+
+        <p id="loginError" class="error">Invalid email or password</p>
+
+        <button class="primary-btn" type="submit">Log In</button>
+    </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

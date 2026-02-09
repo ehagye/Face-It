@@ -3,28 +3,87 @@
     font-family: "Inter", system-ui, sans-serif;
 }
 
-body {
-    margin: 0;
-    background: linear-gradient(135deg, #eef2f7, #f9fbff);
+.dark-bg {
+    background: radial-gradient(circle at top, #1a1f3c, #0b0e1a);
+    color: white;
+}
+
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* TEXT */
+.gradient-text {
+    background: linear-gradient(90deg, #8f8cff, #4fc3ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    color: #aaa;
+}
+
+/* HERO */
+.hero-card {
+    text-align: center;
+    max-width: 420px;
+}
+
+.hero-actions {
+    margin-top: 30px;
+}
+
+/* CARDS */
+.glass-card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* AUTH */
+.auth-card {
+    width: 360px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
+}
+
+/* BUTTONS */
+button {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.secondary-btn {
+    background: #333;
+    margin-left: 10px;
+}
+
+.inline-alerts {
+    margin-left: 10px;
+    padding: 6px 10px;
+    font-size: 12px;
 }
 
 /* TOP BAR */
 .top-bar {
-    background: linear-gradient(to right, #4f8cff, #6c63ff);
-    color: white;
-    padding: 18px 30px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-.settings-btn {
-    background: white;
-    border: none;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
+    padding: 20px 30px;
 }
 
 /* DASHBOARD */
@@ -32,100 +91,94 @@ body {
     padding: 30px;
 }
 
-/* CARDS */
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.08);
-}
-
-/* PROFESSOR */
-.professor-card {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-bottom: 30px;
-}
-
-.professor-card img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-}
-
-/* GRID */
-.content {
+.dashboard-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 25px;
 }
 
-.left, .right {
+.column {
     display: flex;
     flex-direction: column;
     gap: 25px;
-}
-
-/* SELECT */
-.class-select {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
 }
 
 /* ROSTER */
 .roster {
     max-height: 220px;
     overflow-y: auto;
-    margin-top: 10px;
 }
 
-.student {
+.row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    padding: 8px 0;
-    border-bottom: 1px solid #eee;
+    margin-top: 10px;
 }
 
 /* LOG */
 .log {
-    max-height: 160px;
+    max-height: 150px;
     overflow-y: auto;
     font-size: 14px;
 }
 
-.log .alert {
-    color: #e63946;
+/* STATUS */
+.active {
+    color: #4caf50;
     font-weight: bold;
 }
 
-/* CAMERA */
-.camera .active {
-    color: green;
-    font-weight: bold;
-    font-size: 18px;
-}
-.prof-info h2 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* ERROR */
+.error {
+    display: none;
+    color: #ff6b6b;
+    margin-top: 8px;
 }
 
-.alerts-btn {
-    background: #ffe8e8;
-    color: #e63946;
-    border: none;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    cursor: pointer;
+.nav-actions button {
+    margin-left: 10px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
 }
 
-.alerts-btn:hover {
-    background: #ffd1d1;
+.active-nav {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
 }
 
-.setting-row {
+.warn {
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+.setting {
+    display: block;
     margin-top: 15px;
+    font-size: 16px;
+}
+/* ENROLL PAGE */
+.centered-content {
+    display: flex;
+    justify-content: center;
+}
+
+.enroll-card {
+    max-width: 520px;
+    width: 100%;
+}
+
+.enroll-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 10px;
 }

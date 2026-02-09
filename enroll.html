@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Face-IT · Student Enrollment</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-bg">
+
+<main class="dashboard centered-content">
+
+    <section class="glass-card enroll-card">
+        <h2>Student Enrollment</h2>
+        <p class="subtitle">Register a student for facial recognition attendance</p>
+
+        <form class="enroll-form" onsubmit="mockEnroll(event)">
+
+            <!-- NAME -->
+            <div class="form-row">
+                <input type="text" placeholder="First Name" required>
+                <input type="text" placeholder="Last Name" required>
+            </div>
+
+            <!-- STUDENT ID -->
+            <input type="text" placeholder="Student ID" required>
+
+            <!-- PROFESSOR -->
+            <label>Professor</label>
+            <input list="professors" placeholder="Search professor..." required>
+
+            <datalist id="professors">
+                <option value="Dr. William G. Johnson">
+                <option value="Dr. Sarah Nguyen">
+                <option value="Dr. Michael Chen">
+            </datalist>
+
+            <!-- CLASS -->
+            <label>Class</label>
+            <input list="classes" placeholder="Search class..." required>
+
+            <datalist id="classes">
+                <option value="Data Science 101">
+                <option value="Capstone ICTW 004">
+                <option value="Machine Learning 301">
+            </datalist>
+
+            <!-- IMAGE UPLOAD -->
+            <label>Upload Face Images</label>
+            <input type="file" multiple accept="image/*" required>
+
+            <!-- SUBMIT -->
+            <button class="primary-btn full-width" type="submit">
+                Enroll Student
+            </button>
+
+            <p class="hint">
+                * Images will be used to train the recognition model
+            </p>
+        </form>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
