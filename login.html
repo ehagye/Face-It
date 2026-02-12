@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+// If already logged in, skip login page
+if (isset($_SESSION['logged_in'])) {
+    header("Location: index.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,16 +19,18 @@
 <div class="auth-card">
     <h2>Professor Login</h2>
 
-    <form onsubmit="login(event)">
-        <input id="email" type="email" placeholder="professor@faceit.edu" required>
-        <input id="password" type="password" placeholder="Password" required>
+    <?php if (isset($_SESSION['error'])): ?>
+        <p class="error"><?= htmlspecialchars($_SESSION['error']) ?></p>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
 
-        <p id="loginError" class="error">Invalid email or password</p>
+    <form method="POST" action="authenticate.php">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
 
-        <button class="primary-btn" type="submit">Log In</button>
+        <button type="submit">Login</button>
     </form>
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>
