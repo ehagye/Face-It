@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,8 +97,6 @@
 
 <script src="script.js"></script>
 <script>
-protectPage();
-
 new Chart(document.getElementById("attendanceChart"), {
     type: "doughnut",
     data: {

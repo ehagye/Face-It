@@ -1,6 +1,6 @@
 // NAVIGATION
 function goToLogin() {
-    window.location.href = "login.html";
+    window.location.href = "login.php";
 }
 
 function goToEnroll() {
@@ -8,7 +8,7 @@ function goToEnroll() {
 }
 
 function goToDashboard() {
-    window.location.href = "index.html";
+    window.location.href = "index.php";
 }
 
 function goToAlerts() {
