@@ -29,7 +29,7 @@ function login(event) {
 
     if (email === "professor@faceit.edu" && password === "faceit123") {
         sessionStorage.setItem("isLoggedIn", "true");
-        window.location.href = "index.html";
+        window.location.href = "index.php";
     } else {
         error.style.display = "block";
     }
