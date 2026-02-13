@@ -5,3 +5,9 @@ export const supabase = createClient(
     "sb_publishable_OzhXMAGzO7kkMhHrOUPbQw_GKrJIPbM"
 );
 
+async function testConnection() {
+    const { data, error } = await supabase.from("students").select("*");
+    console.log(data, error);
+}
+
+testConnection();
