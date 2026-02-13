@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (!isset($_SESSION['logged_in'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,20 +21,23 @@
         <h2>Student Enrollment</h2>
         <p class="subtitle">Register a student for facial recognition attendance</p>
 
-        <form class="enroll-form" onsubmit="mockEnroll(event)">
+        <form class="enroll-form"
+              method="POST"
+              action="process_enroll.php"
+              enctype="multipart/form-data">
 
             <!-- NAME -->
             <div class="form-row">
-                <input type="text" placeholder="First Name" required>
-                <input type="text" placeholder="Last Name" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
             </div>
 
             <!-- STUDENT ID -->
-            <input type="text" placeholder="Student ID" required>
+            <input type="text" name="student_id" placeholder="Student ID" required>
 
             <!-- PROFESSOR -->
             <label>Professor</label>
-            <input list="professors" placeholder="Search professor..." required>
+            <input list="professors" name="professor" placeholder="Search professor..." required>
 
             <datalist id="professors">
                 <option value="Dr. William G. Johnson">
@@ -36,7 +47,7 @@
 
             <!-- CLASS -->
             <label>Class</label>
-            <input list="classes" placeholder="Search class..." required>
+            <input list="classes" name="class" placeholder="Search class..." required>
 
             <datalist id="classes">
                 <option value="Data Science 101">
@@ -46,7 +57,7 @@
 
             <!-- IMAGE UPLOAD -->
             <label>Upload Face Images</label>
-            <input type="file" multiple accept="image/*" required>
+            <input type="file" name="faces[]" multiple accept="image/*" required>
 
             <!-- SUBMIT -->
             <button class="primary-btn full-width" type="submit">
