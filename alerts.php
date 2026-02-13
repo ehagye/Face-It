@@ -6,7 +6,6 @@ if (!isset($_SESSION['logged_in'])) {
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@ if (!isset($_SESSION['logged_in'])) {
 <header class="top-bar">
     <h1>Face-IT</h1>
     <nav class="nav-actions">
-       <button onclick="goToDashboard()">Dashboard</button>
+        <button onclick="goToDashboard()">Dashboard</button>
         <button class="active-nav">Alerts</button>
         <button onclick="goToSettings()">Settings</button>
         <button onclick="logout()">Log Out</button>
@@ -38,6 +37,5 @@ if (!isset($_SESSION['logged_in'])) {
 </main>
 
 <script src="script.js"></script>
-<script>protectPage();</script>
 </body>
 </html>
