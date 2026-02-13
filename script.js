@@ -4,7 +4,7 @@ function goToLogin() {
 }
 
 function goToEnroll() {
-    window.location.href = "enroll.html";
+    window.location.href = "enroll.php";
 }
 
 function goToDashboard() {
@@ -12,11 +12,11 @@ function goToDashboard() {
 }
 
 function goToAlerts() {
-    window.location.href = "alerts.html";
+    window.location.href = "alerts.php";
 }
 
 function goToSettings() {
-    window.location.href = "settings.html";
+    window.location.href = "settings.php";
 }
 
 // LOGIN (MOCK)
