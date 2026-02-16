@@ -35,11 +35,6 @@ function login(event) {
     }
 }
 
-// LOGOUT
-function logout() {
-    sessionStorage.removeItem("isLoggedIn");
-    goHome();
-}
 
 // PAGE PROTECTION
 function protectPage() {
