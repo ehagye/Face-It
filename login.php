@@ -2,7 +2,7 @@
 session_start();
 
 // If already logged in, skip login page
-if (isset($_SESSION['logged_in'])) {
+if (isset($_SESSION['user'])) {
     header("Location: index.php");
     exit;
 }

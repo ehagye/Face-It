@@ -28,7 +28,6 @@ function login(event) {
     const error = document.getElementById("loginError");
 
     if (email === "professor@faceit.edu" && password === "faceit123") {
-        sessionStorage.setItem("isLoggedIn", "true");
         window.location.href = "index.php";
     } else {
         error.style.display = "block";
@@ -36,12 +35,6 @@ function login(event) {
 }
 
 
-// PAGE PROTECTION
-function protectPage() {
-    if (!sessionStorage.getItem("isLoggedIn")) {
-        window.location.href = "home.html";
-    }
-}
 
 function mockEnroll(event) {
     event.preventDefault();

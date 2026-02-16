@@ -22,7 +22,7 @@ if (!isset($_SESSION['user'])) {
         <button onclick="goToDashboard()">Dashboard</button>
         <button onclick="goToAlerts()">Alerts</button>
         <button class="active-nav">Settings</button>
-        <button onclick="logout()">Log Out</button>
+        <button onclick="window.location.href='logout.php'">Log Out</button>
     </nav>
 </header>
 
@@ -43,6 +43,5 @@ if (!isset($_SESSION['user'])) {
 </main>
 
 <script src="script.js"></script>
-<script>protectPage();</script>
 </body>
 </html>

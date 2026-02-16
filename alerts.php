@@ -21,7 +21,7 @@ if (!isset($_SESSION['logged_in'])) {
         <button onclick="goToDashboard()">Dashboard</button>
         <button class="active-nav">Alerts</button>
         <button onclick="goToSettings()">Settings</button>
-        <button onclick="logout()">Log Out</button>
+        <button onclick="window.location.href='logout.php'">Log Out</button>
     </nav>
 </header>
 
