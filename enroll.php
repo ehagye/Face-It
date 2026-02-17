@@ -1,11 +1,12 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['logged_in'])) {
-    header("Location: login.php");
-    exit;
-}
+$success = $_SESSION['success'] ?? null;
+$error   = $_SESSION['error'] ?? null;
+
+unset($_SESSION['success'], $_SESSION['error']);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
