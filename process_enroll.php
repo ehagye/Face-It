@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// basic validation
+//$SUPABASE_URL = "https://evoqwkezqahsvctmopld.supabase.co
 if (
     empty($_POST['first_name']) ||
     empty($_POST['last_name']) ||
