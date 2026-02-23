@@ -10,6 +10,8 @@ import numpy as np
 from AI_Facial_Detection.face_detector import InsightFaceDetector
 from AI_Facial_Detection.overlay import draw_faces_overlay
 
+print([l for l in cv2.getBuildInformation().splitlines() if "GUI:" in l][0])
+
 # printing out environment versions
 print("Python:", sys.version)
 print("Opencv:", cv2.__version__)
@@ -18,7 +20,7 @@ print("Numpy:", np.__version__)
 # camera settings saved all in one place
 @dataclass
 class CameraConfiguration:
-    camera_index: int = 1
+    camera_index: int = 0
     width: int = 1280
     height: int = 720
     target_fps: int = 30
@@ -81,7 +83,7 @@ def create_overlay(frame: np.ndarray, fps: float, text: str = "") -> np.ndarray:
     return out
 
 def open_camera(cfg: CameraConfiguration) -> cv2.VideoCapture:
-    cap = cv2.VideoCapture(cfg.camera_index, cv2.CAP_AVFOUNDATION)
+    cap = cv2.VideoCapture(cfg.camera_index, cv2.CAP_DSHOW)
 
     # raise error if camera can't be opened
     if not cap.isOpened():
@@ -166,5 +168,5 @@ def camera_test(cfg: CameraConfiguration, max_retries: int = 5):
             cap.release()
         cv2.destroyAllWindows()
 
-cfg = CameraConfiguration(camera_index=1, width=1280, height=720, target_fps=30)
+cfg = CameraConfiguration(camera_index=0, width=1280, height=720, target_fps=30)
 camera_test(cfg)
