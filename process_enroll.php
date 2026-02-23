@@ -55,8 +55,8 @@ $data = [
     "student_id" => (int) $_POST['student_id'],
     "first_name" => trim($_POST['first_name']),
     "last_name"  => trim($_POST['last_name']),
-    "face_encoding" => $storagePath,
-    "photo_path" => null
+    "photo_path" => $storagePath,
+    "face_encoding" => null
 ];
 
 // 3. send to Supabase REST API
