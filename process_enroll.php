@@ -1,7 +1,4 @@
 <?php
-echo "NEW VERSION LOADED";
-exit;
-
 
 // process_enroll.php
 // SERVER SIDE ONLY — safe place for secrets
