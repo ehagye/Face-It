@@ -6,9 +6,11 @@ import numpy as np
 @dataclass(frozen=True)
 class DetectedFace:
     # This is a single detected face result
-    bbox: Tuple[int, int, int, int] # (x1, y1, x2, y2)
-    score: float                    # detection confidence score
-    kps: np.ndarray | None = None   # (5,2) landmarks if available
+    bbox: Tuple[int, int, int, int]            # (x1, y1, x2, y2)
+    score: float                               # detection confidence score
+    kps: np.ndarray | None = None              # (5,2) landmarks if available
+    embedding: np.ndarray | None = None        # (512,) the high dimension vector
+    normed_embedding: np.ndarray | None = None # (512,) L2-normalized
 
 # Implementing InsightFace dectector wrapper
 import time
@@ -48,7 +50,25 @@ class InsightFaceDetector:
 
             # kps is (5,2) landmarks (eyes, nose, mouth corners) if present
             kps = getattr(f, "kps", None)
-            results.append(DetectedFace(bbox=(x1, y1, x2, y2), score=score, kps=kps))
+
+            # getting the regular and normalized embeddings
+            emb = getattr(f, "embedding", None)
+            nemb = getattr(f, "normed_embedding", None)
+
+            if emb is not None:
+                emb = np.asarray(emb, dtype=np.float32)
+            if nemb is not None:
+                nemb = np.asarray(nemb, dtype=np.float32)
+
+            results.append(
+                DetectedFace(
+                    bbox=(x1, y1, x2, y2),
+                    score=score,
+                    kps=kps,
+                    embedding=emb,
+                    normed_embedding=nemb
+                )
+            )
         
         return results, elapsed_ms
     

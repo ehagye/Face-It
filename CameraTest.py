@@ -9,6 +9,8 @@ import numpy as np
 # importing other folders
 from AI_Facial_Detection.face_detector import InsightFaceDetector
 from AI_Facial_Detection.overlay import draw_faces_overlay
+from AI_Facial_Detection.similarity import cosine_similarity
+from AI_Facial_Detection.selection import face_selection
 
 print([l for l in cv2.getBuildInformation().splitlines() if "GUI:" in l][0])
 
@@ -125,6 +127,7 @@ def camera_test(cfg: CameraConfiguration, max_retries: int = 5):
         # opening camera
         cap = open_camera(cfg)
         detector = InsightFaceDetector(ctx_id=-1, det_size=(640, 640))
+        ref_embedding: np.ndarray | None = None
 
         while True:
             frame = read_frame(cap, cfg)
@@ -151,17 +154,43 @@ def camera_test(cfg: CameraConfiguration, max_retries: int = 5):
             faces, det_ms = detector.detect(frame)
             frame = draw_faces_overlay(frame, faces)
 
+            # picking the best face to compute cosine similarity
+            best = face_selection(faces)
+
+            sim_text = "ref=NONE"
+            if ref_embedding is not None:
+                sim_text = "ref=SET (no face/embedding)"
+
+            # calculating the cosine similarity with best and reference
+            if best is not None and best.normed_embedding is not None:
+                if ref_embedding is not None:
+                    sim = cosine_similarity(best.normed_embedding, ref_embedding)
+                    sim_text = f"cos={sim:.3f}"
+                else:
+                    sim_text = "ref=NONE (press r)"
+            
+            # creating the overlay
             display = create_overlay(
                 frame,
                 fps,
-                text=f"{cfg.width}x{cfg.height} | faces={len(faces)} | det={det_ms:.1f}ms"
+                text=f"{cfg.width}x{cfg.height} | faces={len(faces)} | det={det_ms:.1f}ms | {sim_text}"
             )
             
             cv2.imshow(cfg.debug_window, display)
 
+            # q to quit the camera
             key = cv2.waitKey(1) & 0xFF
             if key == ord("q"):
                 break
+
+            # r to set reference face
+            if key == ord("r"):
+                if best is not None and best.normed_embedding is not None:
+                    ref_embedding = best.normed_embedding
+                    print("Reference embedding captured")
+                else:
+                    print("No face/embedding could be detected for reference.")
+
            
     finally:
         if cap is not None:
