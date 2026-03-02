@@ -8,7 +8,7 @@ function goToEnroll() {
 }
 
 function goToDashboard() {
-    window.location.href = "index.html";
+    window.location.href = "main.html";
 }
 
 function goToAlerts() {
@@ -29,7 +29,7 @@ function login(event) {
 
     if (email === "professor@faceit.edu" && password === "faceit123") {
         sessionStorage.setItem("isLoggedIn", "true");
-        window.location.href = "index.html";
+        window.location.href = "main.html";
     } else {
         error.style.display = "block";
     }
@@ -64,7 +64,7 @@ function goToManageClasses() {
 }
 
 function goToDashboard() {
-    window.location.href = "index.html";
+    window.location.href = "main.html";
 }
 
 function goHome() {

@@ -1,11 +1,29 @@
+/* ==================================================
+   FACE-IT MASTER STYLESHEET
+   Cleaned + Consolidated
+   Covers:
+   - Global
+   - Layout
+   - Dashboard
+   - Manage Classes
+   - Enroll
+   - Camera UI
+================================================== */
+
+
+/* ==================================================
+   1. GLOBAL RESET + BASE STYLES
+================================================== */
+
 * {
     box-sizing: border-box;
     font-family: "Inter", system-ui, sans-serif;
 }
 
-.dark-bg {
+body.dark-bg {
     background: radial-gradient(circle at top, #1a1f3c, #0b0e1a);
     color: white;
+    margin: 0;
 }
 
 .centered {
@@ -15,7 +33,11 @@
     height: 100vh;
 }
 
-/* TEXT */
+
+/* ==================================================
+   2. TYPOGRAPHY
+================================================== */
+
 .gradient-text {
     background: linear-gradient(90deg, #8f8cff, #4fc3ff);
     -webkit-background-clip: text;
@@ -26,39 +48,58 @@
     color: #aaa;
 }
 
-/* HERO */
-.hero-card {
-    text-align: center;
-    max-width: 420px;
+.warn {
+    color: #ff6b6b;
+    font-weight: 500;
 }
 
-.hero-actions {
-    margin-top: 30px;
+.active {
+    color: #4caf50;
+    font-weight: bold;
 }
 
-/* CARDS */
+
+/* ==================================================
+   3. TOP BAR / NAVIGATION
+================================================== */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+.nav-actions button {
+    margin-left: 10px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 14px;
+}
+
+.active-nav {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none !important;
+}
+
+
+/* ==================================================
+   4. GLASS CARD SYSTEM (Reusable)
+================================================== */
+
 .glass-card {
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(14px);
     border-radius: 18px;
-    padding: 20px;
+    padding: 25px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
-/* AUTH */
-.auth-card {
-    width: 360px;
-}
 
-input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 12px;
-    border-radius: 10px;
-    border: none;
-}
+/* ==================================================
+   5. BUTTON SYSTEM
+================================================== */
 
-/* BUTTONS */
 button {
     background: linear-gradient(90deg, #6c63ff, #4fc3ff);
     border: none;
@@ -66,11 +107,20 @@ button {
     border-radius: 10px;
     color: white;
     cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
 .secondary-btn {
     background: #333;
-    margin-left: 10px;
+}
+
+.danger-btn {
+    background: linear-gradient(90deg, #ff6b6b, #ff4d4d);
 }
 
 .inline-alerts {
@@ -79,14 +129,37 @@ button {
     font-size: 12px;
 }
 
-/* TOP BAR */
-.top-bar {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 30px;
+/* Outline style button (used for Manage Classes in header) */
+.manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 8px 14px;
+    font-size: 13px;
 }
 
-/* DASHBOARD */
+
+/* ==================================================
+   6. FORMS
+================================================== */
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+input:focus, select:focus {
+    box-shadow: 0 0 0 2px rgba(79, 195, 255, 0.35);
+}
+
+
+/* ==================================================
+   7. DASHBOARD LAYOUT
+================================================== */
+
 .dashboard {
     padding: 30px;
 }
@@ -103,7 +176,6 @@ button {
     gap: 25px;
 }
 
-/* ROSTER */
 .roster {
     max-height: 220px;
     overflow-y: auto;
@@ -115,47 +187,58 @@ button {
     margin-top: 10px;
 }
 
-/* LOG */
 .log {
     max-height: 150px;
     overflow-y: auto;
     font-size: 14px;
 }
 
-/* STATUS */
-.active {
-    color: #4caf50;
-    font-weight: bold;
+
+/* ==================================================
+   8. MANAGE CLASSES PAGE
+================================================== */
+
+.manage-container {
+    padding: 30px;
 }
 
-/* ERROR */
-.error {
-    display: none;
-    color: #ff6b6b;
-    margin-top: 8px;
+.manage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 20px;
 }
 
-.nav-actions button {
-    margin-left: 10px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
+.manage-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 15px;
 }
 
-.active-nav {
-    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+.class-table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
 }
 
-.warn {
-    color: #ff6b6b;
+.class-table th,
+.class-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.class-table th {
+    color: #aaa;
     font-weight: 500;
 }
 
-.setting {
-    display: block;
-    margin-top: 15px;
-    font-size: 16px;
-}
-/* ENROLL PAGE */
+
+/* ==================================================
+   9. ENROLL PAGE
+================================================== */
+
 .centered-content {
     display: flex;
     justify-content: center;
@@ -183,7 +266,6 @@ button {
     margin-top: 10px;
 }
 
-/* Card header layout */
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -191,26 +273,10 @@ button {
     margin-bottom: 15px;
 }
 
-/* Manage Classes button */
-.manage-btn {
-    padding: 6px 14px;
-    font-size: 13px;
-    border-radius: 8px;
-    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
-}
 
-.manage-btn:hover {
-    transform: translateY(-1px);
-}
-
-.manage-btn {
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.4);
-}
-
-/* =========================
-   CAMERA FREEZE UI
-========================= */
+/* ==================================================
+   10. CAMERA FREEZE UI (Enrollment Page)
+================================================== */
 
 .camera-wrapper {
     position: relative;
@@ -219,7 +285,8 @@ button {
     justify-content: center;
 }
 
-video, canvas {
+video,
+canvas {
     width: 100%;
     max-width: 420px;
     border-radius: 24px;
@@ -227,7 +294,7 @@ video, canvas {
     box-shadow: 0 20px 50px rgba(0,0,0,0.6);
 }
 
-/* Success check overlay */
+/* Transparent green check overlay */
 .success-overlay {
     position: absolute;
     top: 50%;
@@ -238,4 +305,21 @@ video, canvas {
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+
+/* ==================================================
+   11. UTILITIES
+================================================== */
+
+.error {
+    display: none;
+    color: #ff6b6b;
+    margin-top: 8px;
+}
+
+.setting {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
 }
