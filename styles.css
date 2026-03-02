@@ -40,7 +40,10 @@ body.dark-bg {
 
 .gradient-text {
     background: linear-gradient(90deg, #8f8cff, #4fc3ff);
-    -webkit-background-clip: text;
+
+    background-clip: text;           /* standard */
+    -webkit-background-clip: text;   /* Chrome/Safari */
+
     color: transparent;
 }
 
