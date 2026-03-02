@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Classes - Face-IT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="dark-bg">
+
+<header class="top-bar">
+  <h1>Face-IT</h1>
+  <nav class="nav-actions">
+    <button onclick="goToDashboard()">Dashboard</button>
+  </nav>
+</header>
+
+<main class="manage-container">
+
+  <h2 class="gradient-text">Manage Classes</h2>
+  <p class="subtitle">Create, edit, or remove courses</p>
+
+  <section class="manage-grid">
+
+    <!-- ENROLL -->
+    <div class="glass-card">
+      <h3>Enroll New Class</h3>
+
+      <form class="manage-form" id="enrollClassForm">
+        <div class="form-inline">
+          <div>
+            <label class="subtitle">CRN</label>
+            <input type="text" id="crn" placeholder="12345" required>
+          </div>
+          <div>
+            <label class="subtitle">Class ID</label>
+            <input type="text" id="class_id" placeholder="ICTW004" required>
+          </div>
+          <div>
+            <label class="subtitle">Class Name</label>
+            <input type="text" id="class_name" placeholder="Capstone ICTW" required>
+          </div>
+
+          <button type="submit">Enroll</button>
+        </div>
+      </form>
+
+      <div id="enrollMsg" class="subtitle" style="margin-top:10px;"></div>
+    </div>
+
+    <!-- DELETE -->
+    <div class="glass-card">
+      <h3>Delete Class</h3>
+
+      <form class="manage-form" id="deleteClassForm">
+        <div class="form-inline small">
+          <div>
+            <label class="subtitle">Class ID</label>
+            <input type="text" id="delete_class_id" placeholder="ICTW004" required>
+          </div>
+          <button type="submit" class="danger-btn">Delete</button>
+        </div>
+      </form>
+
+      <div id="deleteMsg" class="subtitle" style="margin-top:10px;"></div>
+    </div>
+
+  </section>
+
+  <!-- CURRENT CLASSES -->
+  <section class="glass-card table-wrap">
+    <h3>Current Classes</h3>
+
+    <table class="class-table" id="classTable">
+      <thead>
+        <tr>
+          <th>CRN</th>
+          <th>Class ID</th>
+          <th>Class Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>12345</td>
+          <td>ICTW004</td>
+          <td>Capstone ICTW</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>

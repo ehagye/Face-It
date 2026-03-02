@@ -44,9 +44,25 @@
                 <option value="Machine Learning 301">
             </datalist>
 
-            <!-- IMAGE UPLOAD -->
-            <label>Upload Face Images</label>
-            <input type="file" multiple accept="image/*" required>
+            <h3>Live Face Capture</h3>
+
+            <div class="camera-wrapper">
+                <video id="video" autoplay playsinline></video>
+                <canvas id="canvas" style="display:none;"></canvas>
+
+                <!-- Success overlay -->
+                <div id="successOverlay" class="success-overlay">
+                    ✓
+                </div>
+            </div>
+
+            <div class="camera-actions">
+                <button type="button" onclick="startCamera()">Start Camera</button>
+                <button type="button" onclick="capturePhoto()">Capture</button>
+            </div>
+
+            <input type="hidden" id="face_image" name="face_image">
+            <p id="camera-status" class="subtitle"></p>
 
             <!-- SUBMIT -->
             <button class="primary-btn full-width" type="submit">
