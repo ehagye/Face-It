@@ -14,7 +14,8 @@ unset($_SESSION['success'], $_SESSION['error']);
 </head>
 <body class="dark-bg centered">
 
-<div class="auth-card">
+<div class="glass-card enroll-card">
+
     <h2>Professor Login</h2>
 
     <?php if ($error): ?>
@@ -24,8 +25,10 @@ unset($_SESSION['success'], $_SESSION['error']);
     <form method="POST" action="authenticate.php">
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
+
         <button type="submit">Login</button>
     </form>
+
 </div>
 
 </body>
