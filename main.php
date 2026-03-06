@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (empty($_SESSION['user'])) {
+    header("Location: home.html");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,12 +19,13 @@
 
 <header class="top-bar">
     <h1>Face-IT</h1>
-   <nav class="nav-actions">
-    <button onclick="goToDashboard()">Dashboard</button>
-    <button onclick="goToManageClasses()">Manage Classes</button>
-    <button onclick="goToAlerts()">Alerts</button>
-    <button onclick="goToSettings()">Settings</button>
-    <button onclick="logout()">Log Out</button>
+
+    <nav class="nav-actions">
+    <a href="main.php" class="nav-btn">Dashboard</a>
+    <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+    <a href="alerts.php" class="nav-btn">Alerts</a>
+    <a href="settings.php" class="nav-btn">Settings</a>
+    <a href="logout.php" class="nav-btn">Log Out</a>
 </nav>
 </header>
 
@@ -26,7 +36,7 @@
         <div>
             <h2>
                 Dr. William G. Johnson
-                <button class="inline-alerts" onclick="goToAlerts()">View Alerts</button>
+                <a href="alerts.php" class="inline-alerts">View Alerts</a>
             </h2>
             <p>Capstone ICTW · Section 004</p>
         </div>
@@ -36,13 +46,16 @@
 
         <!-- LEFT COLUMN -->
         <div class="column">
+
+            <!-- CLASS SELECTION -->
             <div class="glass-card">
 
                 <div class="card-header">
                     <h3>Class Selection</h3>
-                    <button class="manage-btn" onclick="goToManageClasses()">
+
+                    <a href="manage_classes.php" class="manage-btn">
                         Manage Classes
-                    </button>
+                    </a>
                 </div>
 
                 <select>
@@ -51,54 +64,80 @@
                 </select>
 
             </div>
-            
+
+            <!-- ROSTER -->
             <div class="glass-card">
                 <h3>Class Roster</h3>
+
                 <div class="roster">
+
                     <div class="row">
-                        <span>Jordan Kim</span><span>002481923</span>
-                        <select><option>Present</option><option>Absent</option></select>
+                        <span>Jordan Kim</span>
+                        <span>002481923</span>
+
+                        <select>
+                            <option>Present</option>
+                            <option>Absent</option>
+                        </select>
                     </div>
+
                     <div class="row">
-                        <span>Maya Patel</span><span>002735642</span>
-                        <select><option>Present</option><option>Absent</option></select>
+                        <span>Maya Patel</span>
+                        <span>002735642</span>
+
+                        <select>
+                            <option>Present</option>
+                            <option>Absent</option>
+                        </select>
                     </div>
+
                     <div class="row">
-                        <span>Ethan Williams</span><span>002497658</span>
-                        <select><option>Absent</option><option>Present</option></select>
+                        <span>Ethan Williams</span>
+                        <span>002497658</span>
+
+                        <select>
+                            <option>Absent</option>
+                            <option>Present</option>
+                        </select>
                     </div>
+
                 </div>
             </div>
 
+            <!-- ACTIVITY LOG -->
             <div class="glass-card">
                 <h3>Activity Log</h3>
+
                 <div class="log">
                     <p>[9:01] Attendance — Jordan Kim (0.96)</p>
                     <p class="warn">[9:07] Low confidence — Marcus Johnson</p>
                 </div>
             </div>
+
         </div>
 
         <!-- RIGHT COLUMN -->
         <div class="column">
+
+            <!-- CHART -->
             <div class="glass-card">
                 <h3>Attendance Overview</h3>
                 <canvas id="attendanceChart"></canvas>
             </div>
 
+            <!-- CAMERA STATUS -->
             <div class="glass-card status">
                 <h3>Camera Status</h3>
                 <p class="active">● Active</p>
             </div>
+
         </div>
 
     </section>
+
 </main>
 
-<script src="script.js"></script>
 <script>
-protectPage();
-
 new Chart(document.getElementById("attendanceChart"), {
     type: "doughnut",
     data: {
@@ -117,5 +156,6 @@ new Chart(document.getElementById("attendanceChart"), {
     }
 });
 </script>
+
 </body>
 </html>

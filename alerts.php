@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+$success = $_SESSION['success'] ?? null;
+$error   = $_SESSION['error'] ?? null;
+
+unset($_SESSION['success'], $_SESSION['error']);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +19,11 @@
 <header class="top-bar">
     <h1>Face-IT</h1>
    <nav class="nav-actions">
-    <button onclick="goToDashboard()">Dashboard</button>
-    <button onclick="goToManageClasses()">Manage Classes</button>
-    <button onclick="goToAlerts()">Alerts</button>
-    <button onclick="goToSettings()">Settings</button>
-    <button onclick="logout()">Log Out</button>
+    <a href="main.php" class="nav-btn">Dashboard</a>
+    <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+    <a href="alerts.php" class="nav-btn">Alerts</a>
+    <a href="settings.php" class="nav-btn">Settings</a>
+    <a href="logout.php" class="nav-btn">Log Out</a>
 </nav>
 </header>
 
@@ -29,7 +38,6 @@
     </section>
 </main>
 
-<script src="script.js"></script>
-<script>protectPage();</script>
+
 </body>
 </html>

@@ -1,52 +1,25 @@
-// NAVIGATION
+/*
 function goToLogin() {
-    window.location.href = "login.html";
+    window.location.href = "login.php";
 }
 
 function goToEnroll() {
-    window.location.href = "enroll.html";
+    window.location.href = "enroll.php";
 }
 
 function goToDashboard() {
-    window.location.href = "main.html";
+    window.location.href = "main.php";
 }
 
 function goToAlerts() {
-    window.location.href = "alerts.html";
+    window.location.href = "alerts.php";
 }
 
 function goToSettings() {
     window.location.href = "settings.html";
 }
 
-// LOGIN (MOCK)
-function login(event) {
-    event.preventDefault();
-
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const error = document.getElementById("loginError");
-
-    if (email === "professor@faceit.edu" && password === "faceit123") {
-        sessionStorage.setItem("isLoggedIn", "true");
-        window.location.href = "main.html";
-    } else {
-        error.style.display = "block";
-    }
-}
-
-// LOGOUT
-function logout() {
-    sessionStorage.removeItem("isLoggedIn");
-    goHome();
-}
-
-// PAGE PROTECTION
-function protectPage() {
-    if (!sessionStorage.getItem("isLoggedIn")) {
-        window.location.href = "home.html";
-    }
-}
+*/
 
 function mockEnroll(event) {
     event.preventDefault();
@@ -58,7 +31,7 @@ function mockEnroll(event) {
     // - insert student into MySQL
     // - associate with professor + class
 }
-
+/*** 
 function goToManageClasses() {
     window.location.href = "manage_classes.html";
 }
@@ -70,6 +43,8 @@ function goToDashboard() {
 function goHome() {
     window.location.href = "home.html";
 }
+*/
+
 
 let videoStream = null;
 
