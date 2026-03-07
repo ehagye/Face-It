@@ -122,7 +122,7 @@ if (empty($_SESSION['user'])) {
             <!-- CHART -->
             <div class="glass-card">
                 <h3>Attendance Overview</h3>
-                <canvas id="attendanceChart"></canvas>
+                <canvas id="attendanceChart" width="514" height="514" style="display: block; box-sizing: border-box; height: 343.2px; width: 343.2px;"></canvas>
             </div>
 
             <!-- CAMERA STATUS -->
@@ -138,22 +138,29 @@ if (empty($_SESSION['user'])) {
 </main>
 
 <script>
-new Chart(document.getElementById("attendanceChart"), {
-    type: "doughnut",
-    data: {
-        labels: ["Present", "Absent"],
-        datasets: [{
-            data: [26, 3],
-            backgroundColor: ["#4fc3ff", "#ff6b6b"]
-        }]
-    },
-    options: {
-        plugins: {
-            legend: {
-                labels: { color: "white" }
+document.addEventListener("DOMContentLoaded", () => {
+
+    const ctx = document.getElementById("attendanceChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "doughnut",
+        data: {
+            labels: ["Present", "Absent"],
+            datasets: [{
+                data: [26, 3],
+                backgroundColor: ["#4fc3ff", "#ff6b6b"]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: { color: "white" }
+                }
             }
         }
-    }
+    });
+
 });
 </script>
 

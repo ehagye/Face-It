@@ -368,8 +368,8 @@ input:focus, select:focus {
     justify-content: center;
 }
 
-video,
-canvas {
+.camera-wrapper video,
+.camera-wrapper canvas {
     width: 100%;
     max-width: 420px;
     border-radius: 24px;

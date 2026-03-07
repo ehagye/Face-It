@@ -1,25 +1,3 @@
-/*
-function goToLogin() {
-    window.location.href = "login.php";
-}
-
-function goToEnroll() {
-    window.location.href = "enroll.php";
-}
-
-function goToDashboard() {
-    window.location.href = "main.php";
-}
-
-function goToAlerts() {
-    window.location.href = "alerts.php";
-}
-
-function goToSettings() {
-    window.location.href = "settings.html";
-}
-
-*/
 
 function mockEnroll(event) {
     event.preventDefault();
