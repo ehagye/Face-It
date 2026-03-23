@@ -13,7 +13,7 @@ if (empty($_SESSION['user'])) {
     <meta charset="UTF-8">
     <title>Face-IT Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body class="dark-bg">
 

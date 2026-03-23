@@ -3,8 +3,10 @@
 // process_enroll.php
 // SERVER SIDE ONLY — safe place for secrets
 
-$SUPABASE_URL = "https://evoqwkezqahsvctmopld.supabase.co";
-$SUPABASE_KEY = "sb_secret_vchsmlPS_bl5qcyzCixSFQ_eGnCm4WL";
+$config = require 'config.php';
+
+$SUPABASE_URL = $config['SUPABASE_URL'];
+$SUPABASE_KEY = $config['SUPABASE_KEY'];
 
 // 1. validate input
 if (
