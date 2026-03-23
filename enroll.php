@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+// Optional: Only allow logged-in professors to enroll
+if (empty($_SESSION['user'])) {
+    // You can remove this if enrollment is public
+    // header("Location: home.php");
+    // exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,36 +18,28 @@
 <body class="dark-bg">
 
 <main class="dashboard centered-content">
-
     <section class="glass-card enroll-card">
         <h2>Student Enrollment</h2>
         <p class="subtitle">Register a student for facial recognition attendance</p>
 
-        <form class="enroll-form" onsubmit="mockEnroll(event)">
-
-            <!-- NAME -->
+        <form class="enroll-form" method="POST" action="process_enroll.php" enctype="multipart/form-data">
             <div class="form-row">
-                <input type="text" placeholder="First Name" required>
-                <input type="text" placeholder="Last Name" required>
+                <input type="text" name="first_name" placeholder="First Name" required>
+                <input type="text" name="last_name" placeholder="Last Name" required>
             </div>
 
-            <!-- STUDENT ID -->
-            <input type="text" placeholder="Student ID" required>
+            <input type="text" name="student_id" placeholder="Student ID" required>
 
-            <!-- PROFESSOR -->
             <label>Professor</label>
-            <input list="professors" placeholder="Search professor..." required>
-
+            <input list="professors" name="professor" placeholder="Search professor..." required>
             <datalist id="professors">
                 <option value="Dr. William G. Johnson">
                 <option value="Dr. Sarah Nguyen">
                 <option value="Dr. Michael Chen">
             </datalist>
 
-            <!-- CLASS -->
             <label>Class</label>
-            <input list="classes" placeholder="Search class..." required>
-
+            <input list="classes" name="class" placeholder="Search class..." required>
             <datalist id="classes">
                 <option value="Data Science 101">
                 <option value="Capstone ICTW 004">
@@ -45,15 +47,10 @@
             </datalist>
 
             <h3>Live Face Capture</h3>
-
             <div class="camera-wrapper">
                 <video id="video" autoplay playsinline></video>
                 <canvas id="canvas" style="display:none;"></canvas>
-
-                <!-- Success overlay -->
-                <div id="successOverlay" class="success-overlay">
-                    ✓
-                </div>
+                <div id="successOverlay" class="success-overlay">✓</div>
             </div>
 
             <div class="camera-actions">
@@ -64,17 +61,10 @@
             <input type="hidden" id="face_image" name="face_image">
             <p id="camera-status" class="subtitle"></p>
 
-            <!-- SUBMIT -->
-            <button class="primary-btn full-width" type="submit">
-                Enroll Student
-            </button>
-
-            <p class="hint">
-                * Images will be used to train the recognition model
-            </p>
+            <button class="primary-btn full-width" type="submit">Enroll Student</button>
+            <p class="hint">* Images will be used to train the recognition model</p>
         </form>
     </section>
-
 </main>
 
 <script src="script.js"></script>

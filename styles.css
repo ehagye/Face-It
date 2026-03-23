@@ -73,16 +73,62 @@ body.dark-bg {
     padding: 20px 30px;
 }
 
+.nav-btn {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
 .nav-actions button {
-    margin-left: 10px;
-    background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 10px 14px;
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 .active-nav {
     background: linear-gradient(90deg, #6c63ff, #4fc3ff);
     border: none !important;
+}
+.nav-btn {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
+.manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
 }
 
 
@@ -117,9 +163,29 @@ button:hover {
     transform: translateY(-2px);
     opacity: 0.95;
 }
+.primary-btn,
+.secondary-btn {
+    padding: 12px 20px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.primary-btn {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+}
 
 .secondary-btn {
     background: #333;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
 .danger-btn {
@@ -127,9 +193,23 @@ button:hover {
 }
 
 .inline-alerts {
-    margin-left: 10px;
-    padding: 6px 10px;
+    margin-left: 12px;
+    padding: 6px 12px;
     font-size: 12px;
+
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border-radius: 8px;
+
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.inline-alerts:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
 /* Outline style button (used for Manage Classes in header) */
@@ -288,8 +368,8 @@ input:focus, select:focus {
     justify-content: center;
 }
 
-video,
-canvas {
+.camera-wrapper video,
+.camera-wrapper canvas {
     width: 100%;
     max-width: 420px;
     border-radius: 24px;

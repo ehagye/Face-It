@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if (empty($_SESSION['user'])) {
+    header("Location: home.php");
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +19,14 @@
 
 <header class="top-bar">
     <h1>Face-IT</h1>
-   <nav class="nav-actions">
-    <button onclick="goToDashboard()">Dashboard</button>
-    <button onclick="goToManageClasses()">Manage Classes</button>
-    <button onclick="goToAlerts()">Alerts</button>
-    <button onclick="goToSettings()">Settings</button>
-    <button onclick="logout()">Log Out</button>
-</nav>
+
+    <nav class="nav-actions">
+        <a href="main.php" class="nav-btn">Dashboard</a>
+        <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+        <a href="alerts.php" class="nav-btn">Alerts</a>
+        <a href="settings.php" class="nav-btn">Settings</a>
+        <a href="logout.php" class="nav-btn">Log Out</a>
+    </nav>
 </header>
 
 <main class="manage-container">
@@ -26,56 +36,66 @@
 
   <section class="manage-grid">
 
-    <!-- ENROLL -->
+    <!-- ENROLL CLASS -->
     <div class="glass-card">
       <h3>Enroll New Class</h3>
 
-      <form class="manage-form" id="enrollClassForm">
+      <form class="manage-form" method="POST" action="create_class.php">
+
         <div class="form-inline">
+
           <div>
             <label class="subtitle">CRN</label>
-            <input type="text" id="crn" placeholder="12345" required>
+            <input type="text" name="crn" placeholder="12345" required>
           </div>
+
           <div>
             <label class="subtitle">Class ID</label>
-            <input type="text" id="class_id" placeholder="ICTW004" required>
+            <input type="text" name="class_id" placeholder="ICTW004" required>
           </div>
+
           <div>
             <label class="subtitle">Class Name</label>
-            <input type="text" id="class_name" placeholder="Capstone ICTW" required>
+            <input type="text" name="class_name" placeholder="Capstone ICTW" required>
           </div>
 
           <button type="submit">Enroll</button>
-        </div>
-      </form>
 
-      <div id="enrollMsg" class="subtitle" style="margin-top:10px;"></div>
+        </div>
+
+      </form>
     </div>
 
-    <!-- DELETE -->
+    <!-- DELETE CLASS -->
     <div class="glass-card">
       <h3>Delete Class</h3>
 
-      <form class="manage-form" id="deleteClassForm">
+      <form class="manage-form" method="POST" action="delete_class.php">
+
         <div class="form-inline small">
+
           <div>
             <label class="subtitle">Class ID</label>
-            <input type="text" id="delete_class_id" placeholder="ICTW004" required>
+            <input type="text" name="class_id" placeholder="ICTW004" required>
           </div>
+
           <button type="submit" class="danger-btn">Delete</button>
+
         </div>
+
       </form>
 
-      <div id="deleteMsg" class="subtitle" style="margin-top:10px;"></div>
     </div>
 
   </section>
 
   <!-- CURRENT CLASSES -->
   <section class="glass-card table-wrap">
+
     <h3>Current Classes</h3>
 
-    <table class="class-table" id="classTable">
+    <table class="class-table">
+
       <thead>
         <tr>
           <th>CRN</th>
@@ -83,6 +103,7 @@
           <th>Class Name</th>
         </tr>
       </thead>
+
       <tbody>
         <tr>
           <td>12345</td>
@@ -90,11 +111,12 @@
           <td>Capstone ICTW</td>
         </tr>
       </tbody>
+
     </table>
+
   </section>
 
 </main>
 
-<script src="script.js"></script>
 </body>
 </html>
