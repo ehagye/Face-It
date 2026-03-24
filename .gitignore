@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 config.php
+=======
+# The virtual enviroments
+venv/
+.venv/
+env/
+.env
+>>>>>>> AI
