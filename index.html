@@ -55,18 +55,14 @@
             <div class="glass-card">
                 <h3>Class Roster</h3>
                 <div class="roster">
-                    <div class="row">
-                        <span>Jordan Kim</span><span>002481923</span>
-                        <select><option>Present</option><option>Absent</option></select>
-                    </div>
-                    <div class="row">
-                        <span>Maya Patel</span><span>002735642</span>
-                        <select><option>Present</option><option>Absent</option></select>
-                    </div>
-                    <div class="row">
-                        <span>Ethan Williams</span><span>002497658</span>
-                        <select><option>Absent</option><option>Present</option></select>
-                    </div>
+                    <!-- filled by loadRoster() in script.js -->
+                </div>
+            </div>
+            
+            <div class="glass-card">
+                <h3>Activity Log</h3>
+                <div class="log">
+                    <!-- filled by loadActivityLog() in script.js -->
                 </div>
             </div>
 
@@ -95,9 +91,13 @@
     </section>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="script.js"></script>
 <script>
 protectPage();
+loadRoster();
+loadActivityLog();
+
 
 new Chart(document.getElementById("attendanceChart"), {
     type: "doughnut",

@@ -59,6 +59,7 @@ function mockEnroll(event) {
     // - associate with professor + class
 }
 
+<<<<<<< Updated upstream
 function goToManageClasses() {
     window.location.href = "manage_classes.html";
 }
@@ -125,4 +126,37 @@ function stopCamera() {
         videoStream.getTracks().forEach(track => track.stop());
         videoStream = null;
     }
+=======
+// LOAD ROSTER
+async function loadRoster() {
+    const { data, error } = await db.from('students').select('*');
+    if (error || !data) return;
+
+    const roster = document.querySelector('.roster');
+    if (!roster) return; // not on dashboard page, skip
+
+    roster.innerHTML = data.map(student => `
+        <div class="row">
+            <span>${student.name}</span>
+            <span>${student.student_id}</span>
+            <select>
+                <option>Present</option>
+                <option>Absent</option>
+            </select>
+        </div>
+    `).join('');
+}
+
+// LOAD ACTIVITY LOG
+async function loadActivityLog() {
+    const { data } = await db.from('activity_log').select('*').order('created_at', { ascending: false }).limit(10);
+    if (!data) return;
+
+    const log = document.querySelector('.log');
+    if (!log) return;
+
+    log.innerHTML = data.map(entry => `
+        <p class="${entry.confidence < 0.8 ? 'warn' : ''}">[${entry.time}] ${entry.message}</p>
+    `).join('');
+>>>>>>> Stashed changes
 }
