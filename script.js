@@ -59,7 +59,6 @@ function mockEnroll(event) {
     // - associate with professor + class
 }
 
-<<<<<<< Updated upstream
 function goToManageClasses() {
     window.location.href = "manage_classes.html";
 }
@@ -126,7 +125,6 @@ function stopCamera() {
         videoStream.getTracks().forEach(track => track.stop());
         videoStream = null;
     }
-=======
 // LOAD ROSTER
 async function loadRoster() {
     const { data, error } = await db.from('students').select('*');
@@ -158,5 +156,4 @@ async function loadActivityLog() {
     log.innerHTML = data.map(entry => `
         <p class="${entry.confidence < 0.8 ? 'warn' : ''}">[${entry.time}] ${entry.message}</p>
     `).join('');
->>>>>>> Stashed changes
 }
