@@ -1,4 +1,6 @@
 // NAVIGATION
+const { createClient } = supabase;
+const db = createClient('https://evoqwkezqahsvctmopld.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2b3F3a2V6cWFoc3ZjdG1vcGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4NDEyNzUsImV4cCI6MjA4NjQxNzI3NX0.2lxmqC6l7GxAMLQxxZ1qSLfniPuKWk4b2WsQSGO1v3o');
 function goToLogin() {
     window.location.href = "login.html";
 }
@@ -143,6 +145,7 @@ async function loadRoster() {
             </select>
         </div>
     `).join('');
+}
 }
 
 // LOAD ACTIVITY LOG
