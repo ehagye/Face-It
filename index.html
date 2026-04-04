@@ -65,15 +65,10 @@
                     <!-- filled by loadActivityLog() in script.js -->
                 </div>
             </div>
+        </div>  
 
-            <div class="glass-card">
-                <h3>Activity Log</h3>
-                <div class="log">
-                    <p>[9:01] Attendance — Jordan Kim (0.96)</p>
-                    <p class="warn">[9:07] Low confidence — Marcus Johnson</p>
-                </div>
-            </div>
-        </div>
+        <!-- RIGHT COLUMN -->
+        <div class="column">
 
         <!-- RIGHT COLUMN -->
         <div class="column">
@@ -91,14 +86,13 @@
     </section>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="chart.js"></script>
+<script src="supabase.js"></script>
 <script src="script.js"></script>
 <script>
-protectPage();
 loadRoster();
 loadActivityLog();
-
-
+ 
 new Chart(document.getElementById("attendanceChart"), {
     type: "doughnut",
     data: {
