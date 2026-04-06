@@ -1,4 +1,8 @@
 <?php
+
+
+echo "CREATE CLASS FILE LOADED";
+exit;
 session_start();
 
 // SERVER SIDE ONLY safe place for secrets
@@ -8,10 +12,7 @@ $SUPABASE_URL = $config['SUPABASE_URL'];
 $SUPABASE_KEY = $config['SUPABASE_KEY'];
 
 // Auth check
-if (empty($_SESSION['user'])) {
-    header("Location: home.php");
-    exit;
-}
+// add l8r
 
 // 1. Validate input
 if (
