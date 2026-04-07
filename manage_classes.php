@@ -40,7 +40,7 @@ if (empty($_SESSION['user'])) {
     <div class="glass-card">
       <h3>Enroll New Class</h3>
 
-      <form class="manage-form" method="POST" action="create_class.php">
+      <form method="POST" action="/face-it/create_class.php">
 
         <div class="form-inline">
 
