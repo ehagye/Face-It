@@ -1,9 +1,15 @@
-<<<<<<< HEAD
 config.php
-=======
+
 # The virtual enviroments
 venv/
 .venv/
 env/
 .env
->>>>>>> AI
+
+synthetic_face_encodings.py
+
+__pycache__/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
