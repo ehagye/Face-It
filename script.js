@@ -130,14 +130,18 @@ function stopCamera() {
 // LOAD ROSTER
 async function loadRoster() {
     const { data, error } = await db.from('students').select('*');
+
+    console.log("Roster data:", data);
+    console.log("Roster error:", error);
+
     if (error || !data) return;
 
     const roster = document.querySelector('.roster');
-    if (!roster) return; // not on dashboard page, skip
+    if (!roster) return;
 
     roster.innerHTML = data.map(student => `
         <div class="row">
-            <span>${student.name}</span>
+            <span>${student.first_name} ${student.last_name}</span>
             <span>${student.student_id}</span>
             <select>
                 <option>Present</option>
@@ -147,16 +151,24 @@ async function loadRoster() {
     `).join('');
 }
 }
-
 // LOAD ACTIVITY LOG
 async function loadActivityLog() {
-    const { data } = await db.from('activity_log').select('*').order('created_at', { ascending: false }).limit(10);
-    if (!data) return;
+    const { data, error } = await db
+        .from('attendance_logs')
+        .select('*')
+        .order('detected_at', { ascending: false })
+        .limit(10);
+
+    console.log("Log data:", data);
+
+    if (error || !data) return;
 
     const log = document.querySelector('.log');
     if (!log) return;
 
     log.innerHTML = data.map(entry => `
-        <p class="${entry.confidence < 0.8 ? 'warn' : ''}">[${entry.time}] ${entry.message}</p>
+        <p class="${entry.confidence_score < 0.8 ? 'warn' : ''}">
+            [${entry.detected_at}] Student ${entry.student_id} (${entry.status})
+        </p>
     `).join('');
 }
