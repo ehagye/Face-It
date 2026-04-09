@@ -62,28 +62,38 @@ def draw_match_boxes(frame, faces, matcher, threshold=0.55):
     return matched_ids
 
 
-def log_attendance(matcher, student_id, class_id=None):
+def log_attendance(matcher, student_id, class_id=None, class_start_time="09:00"):
     """
-    Mark a student as present in the attendance table.
-    Uses upsert so duplicate detections don't create duplicate rows.
+    Insert an attendance record into attendance_logs.
+    Matches Supabase schema: log_id, student_id, class_id, detected_at, status.
+    Status is calculated based on class start time.
     """
     import datetime
 
+    now = datetime.datetime.now(datetime.timezone.utc)
+    
+    # Determine status based on detection time vs class start
+    local_time = now.astimezone().strftime("%H:%M")
+    if local_time < class_start_time:
+        status = "early"
+    elif local_time <= (datetime.datetime.strptime(class_start_time, "%H:%M") 
+                        + datetime.timedelta(minutes=5)).strftime("%H:%M"):
+        status = "on_time"
+    else:
+        status = "late"
+
     record = {
-        "student_id": student_id,
-        "date": datetime.date.today().isoformat(),
-        "status": "present",
+        "student_id": int(student_id),
+        "class_id": int(class_id) if class_id else None,
+        "detected_at": now.isoformat(),
+        "status": status,
     }
-    if class_id:
-        record["class_id"] = class_id
 
     try:
-        matcher.supabase.table("attendance").upsert(
-            record, on_conflict="student_id,date"
-        ).execute()
+        # Insert (not upsert) since log_id auto-increments
+        matcher.supabase.table("attendance_logs").insert(record).execute()
     except Exception as e:
         print(f"  Attendance log failed for {student_id}: {e}")
-
 
 def main():
     parser = argparse.ArgumentParser(description="Live attendance via face recognition")

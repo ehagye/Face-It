@@ -102,8 +102,8 @@ def main():
 
     # If a student ID is passed as argument, process just that one
     if len(sys.argv) > 1:
-        process_student(sys.argv[1], detector)
-        return
+        process_student(int(sys.argv[1]), detector)
+    return
 
     # Otherwise find all students missing embeddings
     resp = (
