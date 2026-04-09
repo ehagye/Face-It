@@ -1,6 +1,10 @@
-// NAVIGATION
 const { createClient } = supabase;
-const db = createClient('https://evoqwkezqahsvctmopld.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2b3F3a2V6cWFoc3ZjdG1vcGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4NDEyNzUsImV4cCI6MjA4NjQxNzI3NX0.2lxmqC6l7GxAMLQxxZ1qSLfniPuKWk4b2WsQSGO1v3o');
+const db = createClient(
+    'https://evoqwkezqahsvctmopld.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2b3F3a2V6cWFoc3ZjdG1vcGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4NDEyNzUsImV4cCI6MjA4NjQxNzI3NX0.2lxmqC6l7GxAMLQxxZ1qSLfniPuKWk4b2WsQSGO1v3o'
+);
+ 
+// NAVIGATION
 function goToLogin() {
     window.location.href = "login.html";
 }
@@ -127,22 +131,41 @@ function stopCamera() {
         videoStream.getTracks().forEach(track => track.stop());
         videoStream = null;
     }
+}
 // LOAD ROSTER
 async function loadRoster() {
-    const { data, error } = await db.from('students').select('*');
-
-    console.log("Roster data:", data);
-    console.log("Roster error:", error);
-
-    if (error || !data) return;
-
+    const classSelect = document.querySelector('select');
+    const selectedClassName = classSelect ? classSelect.value : 'Data Science 101';
+ 
+    const { data: classData, error: classError } = await db
+        .from('classes')
+        .select('class_id')
+        .eq('class_name', selectedClassName)
+        .single();
+ 
+    if (classError || !classData) {
+        console.log('Could not find class:', classError);
+        return;
+    }
+ 
+    const classId = classData.class_id;
+ 
+    const { data, error } = await db
+        .from('enrollments')
+        .select('student_id, students(first_name, last_name, student_id)')
+        .eq('class_id', classId);
+ 
+    console.log('Enrolled students:', data);
+    console.log('Error:', error);
+ 
     const roster = document.querySelector('.roster');
     if (!roster) return;
-
-    roster.innerHTML = data.map(student => `
+    if (error || !data || data.length === 0) return;
+ 
+    roster.innerHTML = data.map(entry => `
         <div class="row">
-            <span>${student.first_name} ${student.last_name}</span>
-            <span>${student.student_id}</span>
+            <span>${entry.students.first_name} ${entry.students.last_name}</span>
+            <span>${entry.students.student_id}</span>
             <select>
                 <option>Present</option>
                 <option>Absent</option>
@@ -150,7 +173,7 @@ async function loadRoster() {
         </div>
     `).join('');
 }
-}
+
 // LOAD ACTIVITY LOG
 async function loadActivityLog() {
     const { data, error } = await db
