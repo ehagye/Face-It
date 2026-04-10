@@ -1,29 +1,67 @@
+// SUPABASE SETUP
+const { createClient } = supabase;
+const db = createClient(
+    'https://evoqwkezqahsvctmopld.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV2b3F3a2V6cWFoc3ZjdG1vcGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4NDEyNzUsImV4cCI6MjA4NjQxNzI3NX0.2lxmqC6l7GxAMLQxxZ1qSLfniPuKWk4b2WsQSGO1v3o'
+);
 
-function mockEnroll(event) {
-    event.preventDefault();
-
-    alert("Student enrolled successfully (mock)");
-
-    // Later:
-    // - upload images
-    // - insert student into MySQL
-    // - associate with professor + class
+// NAVIGATION
+function goToLogin() {
+    window.location.href = "login.html";
 }
-/*** 
-function goToManageClasses() {
-    window.location.href = "manage_classes.html";
+
+function goToEnroll() {
+    window.location.href = "enroll.html";
 }
 
 function goToDashboard() {
-    window.location.href = "main.html";
+    window.location.href = "index.html";
+}
+
+function goToAlerts() {
+    window.location.href = "alerts.html";
+}
+
+function goToSettings() {
+    window.location.href = "settings.html";
+}
+
+function goToManageClasses() {
+    window.location.href = "manage_classes.html";
 }
 
 function goHome() {
     window.location.href = "home.html";
 }
-*/
 
+// LOGIN (MOCK)
+function login(event) {
+    event.preventDefault();
 
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const error = document.getElementById("loginError");
+
+    if (email === "professor@faceit.edu" && password === "faceit123") {
+        sessionStorage.setItem("isLoggedIn", "true");
+        window.location.href = "index.html";
+    } else {
+        error.style.display = "block";
+    }
+}
+
+// LOGOUT
+function logout() {
+    sessionStorage.removeItem("isLoggedIn");
+    goHome();
+}
+
+function mockEnroll(event) {
+    event.preventDefault();
+    alert("Student enrolled successfully (mock)");
+}
+
+// CAMERA
 let videoStream = null;
 
 function startCamera() {
@@ -63,7 +101,6 @@ function capturePhoto() {
     const imageData = canvas.toDataURL("image/png");
     hiddenInput.value = imageData;
 
-    // Freeze frame: hide video and show canvas
     video.style.display = "none";
     canvas.style.display = "block";
 
@@ -78,4 +115,68 @@ function stopCamera() {
         videoStream.getTracks().forEach(track => track.stop());
         videoStream = null;
     }
+}
+
+// LOAD ROSTER
+async function loadRoster() {
+    const classSelect = document.querySelector('select');
+    const selectedClassName = classSelect ? classSelect.value : 'Data Science 101';
+
+    const { data: classData, error: classError } = await db
+        .from('classes')
+        .select('class_id')
+        .eq('class_name', selectedClassName)
+        .single();
+
+    if (classError || !classData) {
+        console.log('Could not find class:', classError);
+        return;
+    }
+
+    const classId = classData.class_id;
+
+    const { data, error } = await db
+        .from('enrollments')
+        .select('student_id, students(first_name, last_name, student_id)')
+        .eq('class_id', classId);
+
+    console.log('Enrolled students:', data);
+    console.log('Error:', error);
+
+    const roster = document.querySelector('.roster');
+    if (!roster) return;
+    if (error || !data || data.length === 0) return;
+
+    roster.innerHTML = data.map(entry => `
+        <div class="row">
+            <span>${entry.students.first_name} ${entry.students.last_name}</span>
+            <span>${entry.students.student_id}</span>
+            <select>
+                <option>Present</option>
+                <option>Absent</option>
+            </select>
+        </div>
+    `).join('');
+}
+
+// LOAD ACTIVITY LOG
+async function loadActivityLog() {
+    const { data, error } = await db
+        .from('attendance_logs')
+        .select('*')
+        .order('detected_at', { ascending: false })
+        .limit(10);
+
+    console.log("Log data:", data);
+
+    if (error || !data) return;
+
+    const log = document.querySelector('.log');
+    if (!log) return;
+
+    log.innerHTML = data.map(entry => `
+        <p class="${entry.confidence_score < 0.8 ? 'warn' : ''}">
+            [${entry.detected_at}] Student ${entry.student_id} (${entry.status})
+        </p>
+    `).join('');
 }
