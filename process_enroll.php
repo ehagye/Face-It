@@ -37,6 +37,9 @@ $last_name  = trim($_POST['last_name']);
 // }
 
 // 3. insert student data
+
+$class_name = trim($_POST['class'] ?? '');
+
 $studentData = [
     "student_id"    => $student_id,
     "first_name"    => $first_name,
@@ -108,6 +111,8 @@ foreach ($_FILES['faces']['tmp_name'] as $index => $tmp_name) {
             echo "<pre>$uploadResponse</pre>";
             exit;
         }
+
+
 
         $faceData = [
             "student_id" => $student_id,
