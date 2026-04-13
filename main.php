@@ -119,16 +119,36 @@ if (empty($_SESSION['user'])) {
         <!-- RIGHT COLUMN -->
         <div class="column">
 
+            <!-- LIVE CAMERA FEED -->
+            <!-- Browser-side camera preview so the professor can see
+                what the camera sees. The actual face detection and
+                matching runs in a separate Python process. -->
+            <div class="glass-card">
+                <div class="card-header">
+                    <h3>Live Camera</h3>
+                    <div class="camera-controls">
+                        <select id="cameraSelect"></select>
+                        <button id="camToggle" class="manage-btn" onclick="toggleCamera()">
+                            Start
+                        </button>
+                    </div>
+                </div>
+                <div class="camera-feed-wrapper">
+                    <video id="dashCam" autoplay playsinline></video>
+                    <p id="camStatus" class="subtitle">Camera off</p>
+                </div>
+            </div>
+
             <!-- CHART -->
             <div class="glass-card">
                 <h3>Attendance Overview</h3>
-                <canvas id="attendanceChart" width="514" height="514" style="display: block; box-sizing: border-box; height: 343.2px; width: 343.2px;"></canvas>
+                <canvas id="attendanceChart"></canvas>
             </div>
 
             <!-- CAMERA STATUS -->
             <div class="glass-card status">
                 <h3>Camera Status</h3>
-                <p class="active">● Active</p>
+                <p id="camIndicator" class="inactive">● Inactive</p>
             </div>
 
         </div>
@@ -162,6 +182,78 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+// Dashboard camera feed
+// Shows a live preview from any connected camera so the
+// professor can monitor the room. Camera selector lets them
+// pick which device to use (e.g. built-in webcam vs USB cam)
+
+let dashStream = null;
+
+// Populate the camera dropdown with all available video devices
+async function loadCameraList() {
+    const select = document.getElementById("cameraSelect");
+
+    // Need a temporary stream first so the browser reveals device labels
+    try {
+        const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        tempStream.getTracks().forEach(t => t.stop());
+    } catch (e) {
+        console.error("Camera permission denied:", e);
+        return;
+    }
+
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(d => d.kind === "videoinput");
+
+    select.innerHTML = "";
+    videoDevices.forEach((device, i) => {
+        const option = document.createElement("option");
+        option.value = device.deviceId;
+        option.textContent = device.label || `Camera ${i + 1}`;
+        select.appendChild(option);
+    });
+}
+
+// Start or stop the camera preview
+async function toggleCamera() {
+    const video  = document.getElementById("dashCam");
+    const btn    = document.getElementById("camToggle");
+    const status = document.getElementById("camStatus");
+    const indicator = document.getElementById("camIndicator");
+
+    if (dashStream) {
+        // Stop the camera
+        dashStream.getTracks().forEach(t => t.stop());
+        dashStream = null;
+        video.style.display = "none";
+        btn.textContent = "Start";
+        status.textContent = "Camera off";
+        indicator.textContent = "● Inactive";
+        indicator.className = "inactive";
+        return;
+    }
+
+    // Start the selected camera
+    const deviceId = document.getElementById("cameraSelect").value;
+    try {
+        dashStream = await navigator.mediaDevices.getUserMedia({
+            video: { deviceId: { exact: deviceId } }
+        });
+        video.srcObject = dashStream;
+        video.style.display = "block";
+        btn.textContent = "Stop";
+        status.textContent = "";
+        indicator.textContent = "● Active";
+        indicator.className = "active";
+    } catch (e) {
+        console.error("Failed to start camera:", e);
+        status.textContent = "Failed to access camera";
+    }
+}
+
+// Load camera list when the page loads
+document.addEventListener("DOMContentLoaded", loadCameraList);
 </script>
 
 </body>
