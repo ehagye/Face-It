@@ -6,6 +6,7 @@ venv/
 env/
 .env
 
+# creating synthetic data for supabase
 synthetic_face_encodings.py
 
 __pycache__/
@@ -13,3 +14,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
+
+# test files
+test_attendance_time.py
+managerTest.py
