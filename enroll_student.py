@@ -28,7 +28,7 @@ def l2_normalize(v: np.ndarray, eps: float = 1e-9) -> np.ndarray:
 # Enrollment function
 # ----------------------------
 def enroll(student_id: str, first_name: str, last_name: str, camera_index: int = 0):
-    cap = cv2.VideoCapture(camera_index, cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(camera_index)
     if not cap.isOpened():
         raise RuntimeError("camera could not be opened")
     
