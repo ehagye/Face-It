@@ -35,6 +35,30 @@ $students = supabase_get("$supabase_url/rest/v1/students?select=first_name,last_
 
 // FETCH ACTIVITY LOG
 $logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&order=detected_at.desc&limit=10", $supabase_key);
+
+
+// FETCH ATTENDANCE COUNTS FOR SELECTED CLASS
+$total_students = $students ? count($students) : 0;
+$attendance_today = supabase_get("$supabase_url/rest/v1/attendance_logs?select=student_id,status&order=detected_at.desc", $supabase_key);
+
+$present = 0;
+$absent = 0;
+
+if ($attendance_today && $students) {
+    $enrolled_ids = array_column($students, 'student_id');
+    $seen = [];
+    foreach ($attendance_today as $record) {
+        if (in_array($record['student_id'], $enrolled_ids) && !in_array($record['student_id'], $seen)) {
+            $seen[] = $record['student_id'];
+            if ($record['status'] === 'on_time' || $record['status'] === 'early') {
+                $present++;
+            } else {
+                $absent++;
+            }
+        }
+    }
+    $absent += ($total_students - count($seen));
+}
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +91,6 @@ $logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&order=detec
                 Dr. William G. Johnson
                 <a href="alerts.php" class="inline-alerts">View Alerts</a>
             </h2>
-            <p>Capstone ICTW · Section 004</p>
         </div>
     </section>
 
@@ -101,10 +124,10 @@ $logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&order=detec
                             <div class="row">
                                 <span><?= htmlspecialchars($student['first_name'] . ' ' . $student['last_name']) ?></span>
                                 <span><?= htmlspecialchars($student['student_id']) ?></span>
-                                <select>
-                                    <option>Present</option>
-                                    <option>Absent</option>
-                                </select>
+                                <select class="attendance-select" data-id="<?= $student['student_id'] ?>">
+                                <option>Present</option>
+                                <option>Absent</option>
+                            </select>
                             </div>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -153,30 +176,11 @@ $logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&order=detec
     </section>
 
 </main>
-
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById("attendanceChart").getContext("2d");
-    new Chart(ctx, {
-        type: "doughnut",
-        data: {
-            labels: ["Present", "Absent"],
-            datasets: [{
-                data: [26, 3],
-                backgroundColor: ["#4fc3ff", "#ff6b6b"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { color: "white" }
-                }
-            }
-        }
-    });
-});
+    window.present = <?= $present ?>;
+    window.absent = <?= $absent ?>;
 </script>
+<script src="script.js"></script>
 
 </body>
 </html>

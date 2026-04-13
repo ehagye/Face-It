@@ -1,40 +1,26 @@
+// ===============================
 // API PROXY HELPER
+// ===============================
 function fetchFromAPI(endpoint, query = '') {
     return fetch(`api.php?endpoint=${endpoint}&query=${encodeURIComponent(query)}`)
         .then(res => res.json())
         .catch(err => console.error('API error:', err));
 }
 
+// ===============================
 // NAVIGATION
-function goToLogin() {
-    window.location.href = "login.php";
-}
+// ===============================
+function goToLogin() { window.location.href = "login.php"; }
+function goToEnroll() { window.location.href = "enroll.php"; }
+function goToDashboard() { window.location.href = "main.php"; }
+function goToAlerts() { window.location.href = "alerts.php"; }
+function goToSettings() { window.location.href = "settings.php"; }
+function goToManageClasses() { window.location.href = "manage_classes.php"; }
+function goHome() { window.location.href = "home.html"; }
 
-function goToEnroll() {
-    window.location.href = "enroll.php";
-}
-
-function goToDashboard() {
-    window.location.href = "main.php";
-}
-
-function goToAlerts() {
-    window.location.href = "alerts.php";
-}
-
-function goToSettings() {
-    window.location.href = "settings.php";
-}
-
-function goToManageClasses() {
-    window.location.href = "manage_classes.php";
-}
-
-function goHome() {
-    window.location.href = "home.html";
-}
-
+// ===============================
 // LOGIN (MOCK)
+// ===============================
 function login(event) {
     event.preventDefault();
 
@@ -50,7 +36,9 @@ function login(event) {
     }
 }
 
+// ===============================
 // LOGOUT
+// ===============================
 function logout() {
     sessionStorage.removeItem("isLoggedIn");
     window.location.href = "home.html";
@@ -61,7 +49,9 @@ function mockEnroll(event) {
     alert("Student enrolled successfully (mock)");
 }
 
+// ===============================
 // CAMERA
+// ===============================
 let videoStream = null;
 
 function startCamera() {
@@ -117,22 +107,26 @@ function stopCamera() {
     }
 }
 
-// LOAD ROSTER (via proxy)
+// ===============================
+// LOAD ROSTER (FIXED)
+// ===============================
 async function loadRoster() {
     const classSelect = document.querySelector('select');
     const selectedClassName = classSelect ? classSelect.value : 'Data Science 101';
 
-    const students = await fetchFromAPI('students', `?select=first_name,last_name,student_id&class_name=eq.${encodeURIComponent(selectedClassName)}`);
+    const students = await fetchFromAPI(
+        'students',
+        `?select=first_name,last_name,student_id&class_name=eq.${encodeURIComponent(selectedClassName)}`
+    );
 
     const roster = document.querySelector('.roster');
-    if (!roster) return;
-    if (!students || students.length === 0) return;
+    if (!roster || !students || students.length === 0) return;
 
     roster.innerHTML = students.map(student => `
         <div class="row">
             <span>${student.first_name} ${student.last_name}</span>
             <span>${student.student_id}</span>
-            <select>
+            <select class="attendance-select" data-id="${student.student_id}">
                 <option>Present</option>
                 <option>Absent</option>
             </select>
@@ -140,13 +134,17 @@ async function loadRoster() {
     `).join('');
 }
 
-// LOAD ACTIVITY LOG (via proxy)
+// ===============================
+// LOAD ACTIVITY LOG
+// ===============================
 async function loadActivityLog() {
-    const logs = await fetchFromAPI('attendance_logs', '?select=*&order=detected_at.desc&limit=10');
+    const logs = await fetchFromAPI(
+        'attendance_logs',
+        '?select=*&order=detected_at.desc&limit=10'
+    );
 
     const log = document.querySelector('.log');
-    if (!log) return;
-    if (!logs || logs.length === 0) return;
+    if (!log || !logs || logs.length === 0) return;
 
     log.innerHTML = logs.map(entry => `
         <p class="${entry.confidence_score < 0.8 ? 'warn' : ''}">
@@ -154,3 +152,89 @@ async function loadActivityLog() {
         </p>
     `).join('');
 }
+
+// ===============================
+// GLOBAL CHART VARIABLE
+// ===============================
+let attendanceChart;
+
+// ===============================
+// MAIN INIT
+// ===============================
+document.addEventListener("DOMContentLoaded", () => {
+
+    const present = typeof window.present !== "undefined" ? window.present : 0;
+    const absent = typeof window.absent !== "undefined" ? window.absent : 0;
+
+    const ctx = document.getElementById("attendanceChart");
+    if (ctx) {
+        attendanceChart = new Chart(ctx.getContext("2d"), {
+            type: "doughnut",
+            data: {
+                labels: ["Present", "Absent"],
+                datasets: [{
+                    data: [present, absent],
+                    backgroundColor: ["#4fc3ff", "#ff6b6b"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: "white" }
+                    }
+                }
+            }
+        });
+    }
+
+    // OPTIONAL: load dynamic data
+    loadRoster();
+    loadActivityLog();
+});
+
+// ===============================
+// EVENT DELEGATION (KEY FIX)
+// ===============================
+document.addEventListener("change", (e) => {
+
+    if (!e.target.classList.contains("attendance-select")) return;
+
+    const select = e.target;
+    const studentId = select.dataset.id;
+    const status = select.value;
+
+    console.log("Sending:", studentId, status);
+
+    fetch("update_attendance.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            student_id: studentId,
+            status: status
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Saved:", data);
+    })
+    .catch(err => console.error("Error:", err));
+
+    // UPDATE CHART
+    if (!attendanceChart) return;
+
+    const selects = document.querySelectorAll(".attendance-select");
+
+    let newPresent = 0;
+    let newAbsent = 0;
+
+    selects.forEach(s => {
+        if (s.value === "Present") newPresent++;
+        else newAbsent++;
+    });
+
+    attendanceChart.data.datasets[0].data = [newPresent, newAbsent];
+    attendanceChart.update();
+});
