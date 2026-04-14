@@ -52,7 +52,11 @@ function mockEnroll(event) {
 // ===============================
 // CAMERA
 // ===============================
+// Replaced the Python OpenCV webcam loop 
+// — captures multiple face photos via the browser camera API
+
 let videoStream = null;
+let capturedImages = []; // stores base64 JPEGs, like the samples[] array in enroll_student.py
 
 function startCamera() {
     const video = document.getElementById("video");
@@ -61,12 +65,16 @@ function startCamera() {
 
     overlay.style.opacity = "0";
     video.style.display = "block";
+    canvas.style.display = "none";
+
+    // Reset captures when restarting camera
+    capturedImages = [];
 
     navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
         .then(stream => {
             videoStream = stream;
             video.srcObject = stream;
-            status.textContent = "Camera active";
+            status.textContent = "Camera active — capture 5-10 photos with slight head turns.";
         })
         .catch(error => {
             console.error(error);
@@ -77,15 +85,18 @@ function startCamera() {
 function capturePhoto() {
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
-    const hiddenInput = document.getElementById("face_image");
     const status = document.getElementById("camera-status");
     const overlay = document.getElementById("successOverlay");
 
-    const context = canvas.getContext("2d");
+    // Don't capture if camera isn't running
+    if (!videoStream) {
+        status.textContent = "Start the camera first.";
+        return;
+    }
 
+    const context = canvas.getContext("2d");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
-
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     const imageData = canvas.toDataURL("image/png");
@@ -95,9 +106,14 @@ function capturePhoto() {
     canvas.style.display = "block";
 
     stopCamera();
+    // Store as JPEG base64 (smaller than PNG, good enough for face embedding)
+    const imageData = canvas.toDataURL("image/jpeg", 0.9);
+    capturedImages.push(imageData);
 
     overlay.style.opacity = "1";
-    status.textContent = "Face captured successfully";
+    setTimeout(() => { overlay.style.opacity = "0"; }, 400);
+
+    status.textContent = `Captured ${capturedImages.length} photo(s) — aim for 5-10.`;
 }
 
 function stopCamera() {
@@ -107,134 +123,30 @@ function stopCamera() {
     }
 }
 
-// ===============================
-// LOAD ROSTER (FIXED)
-// ===============================
-async function loadRoster() {
-    const classSelect = document.querySelector('select');
-    const selectedClassName = classSelect ? classSelect.value : 'Data Science 101';
+// Form submission
+// Injects all captured images as hidden fields so PHP can upload them to Supabase Storage
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".enroll-form");
+    if (!form) return;
 
-    const students = await fetchFromAPI(
-        'students',
-        `?select=first_name,last_name,student_id&class_name=eq.${encodeURIComponent(selectedClassName)}`
-    );
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const roster = document.querySelector('.roster');
-    if (!roster || !students || students.length === 0) return;
+        if (capturedImages.length < 3) {
+            alert("Please capture at least 3 photos before enrolling.");
+            return;
+        }
 
-    roster.innerHTML = students.map(student => `
-        <div class="row">
-            <span>${student.first_name} ${student.last_name}</span>
-            <span>${student.student_id}</span>
-            <select class="attendance-select" data-id="${student.student_id}">
-                <option>Present</option>
-                <option>Absent</option>
-            </select>
-        </div>
-    `).join('');
-}
-
-// ===============================
-// LOAD ACTIVITY LOG
-// ===============================
-async function loadActivityLog() {
-    const logs = await fetchFromAPI(
-        'attendance_logs',
-        '?select=*&order=detected_at.desc&limit=10'
-    );
-
-    const log = document.querySelector('.log');
-    if (!log || !logs || logs.length === 0) return;
-
-    log.innerHTML = logs.map(entry => `
-        <p class="${entry.confidence_score < 0.8 ? 'warn' : ''}">
-            [${entry.detected_at}] Student ${entry.student_id} (${entry.status})
-        </p>
-    `).join('');
-}
-
-// ===============================
-// GLOBAL CHART VARIABLE
-// ===============================
-let attendanceChart;
-
-// ===============================
-// MAIN INIT
-// ===============================
-document.addEventListener("DOMContentLoaded", () => {
-
-    const present = typeof window.present !== "undefined" ? window.present : 0;
-    const absent = typeof window.absent !== "undefined" ? window.absent : 0;
-
-    const ctx = document.getElementById("attendanceChart");
-    if (ctx) {
-        attendanceChart = new Chart(ctx.getContext("2d"), {
-            type: "doughnut",
-            data: {
-                labels: ["Present", "Absent"],
-                datasets: [{
-                    data: [present, absent],
-                    backgroundColor: ["#4fc3ff", "#ff6b6b"]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        labels: { color: "white" }
-                    }
-                }
-            }
+        // Add each captured image as a hidden input so it's sent with the POST
+        capturedImages.forEach((img, i) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = `faces[${i}]`;
+            input.value = img;
+            form.appendChild(input);
         });
-    }
 
-    // OPTIONAL: load dynamic data
-    loadRoster();
-    loadActivityLog();
-});
-
-// ===============================
-// EVENT DELEGATION (KEY FIX)
-// ===============================
-document.addEventListener("change", (e) => {
-
-    if (!e.target.classList.contains("attendance-select")) return;
-
-    const select = e.target;
-    const studentId = select.dataset.id;
-    const status = select.value;
-
-    console.log("Sending:", studentId, status);
-
-    fetch("update_attendance.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            student_id: studentId,
-            status: status
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("Saved:", data);
-    })
-    .catch(err => console.error("Error:", err));
-
-    // UPDATE CHART
-    if (!attendanceChart) return;
-
-    const selects = document.querySelectorAll(".attendance-select");
-
-    let newPresent = 0;
-    let newAbsent = 0;
-
-    selects.forEach(s => {
-        if (s.value === "Present") newPresent++;
-        else newAbsent++;
+        stopCamera();
+        form.submit();
     });
-
-    attendanceChart.data.datasets[0].data = [newPresent, newAbsent];
-    attendanceChart.update();
 });
