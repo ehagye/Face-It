@@ -36,7 +36,7 @@ from datetime import datetime
 from AI_Facial_Detection.face_detector import InsightFaceDetector, DetectedFace
 from AI_Facial_Detection.selection import face_selection
 from AI_Facial_Detection.supabase_matcher import SupabaseMatcher
-from Attendance.attendance_manager import AttendanceManager
+from attendance_manager import AttendanceManager
 
 
 class AttendanceServer:
