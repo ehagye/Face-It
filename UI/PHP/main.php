@@ -17,8 +17,8 @@ function supabase_get($path, $config) {
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER => [
-            "Authorization: Bearer {$config['SUPABASE_SERVICE_ROLE_KEY']}",
-            "apikey: {$config['SUPABASE_SERVICE_ROLE_KEY']}",
+            "Authorization: Bearer {$config['SUPABASE_KEY']}",
+            "apikey: {$config['SUPABASE_KEY']}",
         ],
     ]);
     $body = curl_exec($ch);
