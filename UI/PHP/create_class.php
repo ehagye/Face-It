@@ -9,7 +9,7 @@ session_start();
 $config = require 'config.php';
 
 $SUPABASE_URL = $config['SUPABASE_URL'];
-$SUPABASE_KEY = $config['SUPABASE_KEY'];
+$SUPABASE_SERVICE_ROLE_KEY = $config['SUPABASE_SERVICE_ROLE_KEY'];
 
 // Auth check
 // add l8r
@@ -40,8 +40,8 @@ curl_setopt_array($ch, [
     CURLOPT_POST => true,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => [
-        "Authorization: Bearer $SUPABASE_KEY",
-        "apikey: $SUPABASE_KEY",
+        "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY",
+        "apikey: $SUPABASE_SERVICE_ROLE_KEY",
         "Content-Type: application/json",
         "Prefer: return=minimal"
     ],
