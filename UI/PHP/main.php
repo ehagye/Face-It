@@ -2,7 +2,7 @@
 session_start();
 
 if (empty($_SESSION['user'])) {
-    header("Location: home.html");
+    header("Location: main.php");
     exit;
 }
 
