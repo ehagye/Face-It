@@ -7,8 +7,7 @@ if (empty($_SESSION['user'])) {
 }
 
 $config = require 'config.php';
-
-$professor_email = is_array($_SESSION['user']) ? $_SESSION['user']['email'] : $_SESSION['user'];
+$professor_email = $_SESSION['user']['email'] ?? '';
 
 /* ── Supabase helper ─────────────────────────────────────────── */
 function supabase_get($path, $config) {
@@ -30,11 +29,6 @@ function supabase_get($path, $config) {
 /* ── Load professor ──────────────────────────────────────────── */
 $rows = supabase_get("professors?email=eq." . urlencode($professor_email) . "&select=*", $config);
 $professor = $rows[0] ?? null;
-
-if (!$professor) {
-    die("Professor not found for email: " . htmlspecialchars($professor_email)
-      . ". Make sure this email exists in the professors table.");
-}
 
 /* ── Load their classes ──────────────────────────────────────── */
 $classes = supabase_get(
