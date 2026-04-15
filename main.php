@@ -34,7 +34,8 @@ $classes = supabase_get("$supabase_url/rest/v1/classes?select=class_id,class_nam
 $students = supabase_get("$supabase_url/rest/v1/students?select=first_name,last_name,student_id&class_name=eq." . urlencode($selected_class_name), $supabase_key);
 
 // FETCH ACTIVITY LOG
-$logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&order=detected_at.desc&limit=10", $supabase_key);
+$enrolled_ids_str = $students ? implode(',', array_column($students, 'student_id')) : '0';
+$logs = supabase_get("$supabase_url/rest/v1/attendance_logs?select=*&student_id=in.($enrolled_ids_str)&order=detected_at.desc&limit=10", $supabase_key);
 
 
 // FETCH ATTENDANCE COUNTS FOR SELECTED CLASS
@@ -67,7 +68,6 @@ if ($attendance_today && $students) {
     <meta charset="UTF-8">
     <title>Face-IT Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="chart.js"></script>
 </head>
 <body class="dark-bg">
 
@@ -179,12 +179,6 @@ if ($attendance_today && $students) {
                 </div>
             </div>
 
-            <!-- CHART -->
-            <div class="glass-card">
-                <h3>Attendance Overview</h3>
-                <canvas id="attendanceChart"></canvas>
-            </div>
-
             <!-- CAMERA STATUS -->
             <div class="glass-card status">
                 <h3>Camera Status</h3>
@@ -197,32 +191,7 @@ if ($attendance_today && $students) {
 
 </main>
 <script>
-    window.present = <?= $present ?>;
-    window.absent = <?= $absent ?>;
-document.addEventListener("DOMContentLoaded", () => {
-
-    const ctx = document.getElementById("attendanceChart").getContext("2d");
-
-    new Chart(ctx, {
-        type: "doughnut",
-        data: {
-            labels: ["Present", "Absent"],
-            datasets: [{
-                data: [26, 3],
-                backgroundColor: ["#4fc3ff", "#ff6b6b"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    labels: { color: "white" }
-                }
-            }
-        }
-    });
-
-});
+  
 
 // Dashboard camera feed
 // Shows a live preview from any connected camera so the

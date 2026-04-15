@@ -60,6 +60,7 @@ let capturedImages = []; // stores base64 JPEGs, like the samples[] array in enr
 
 function startCamera() {
     const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
     const status = document.getElementById("camera-status");
     const overlay = document.getElementById("successOverlay");
 
@@ -98,9 +99,6 @@ function capturePhoto() {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    const imageData = canvas.toDataURL("image/png");
-    hiddenInput.value = imageData;
 
     video.style.display = "none";
     canvas.style.display = "block";
