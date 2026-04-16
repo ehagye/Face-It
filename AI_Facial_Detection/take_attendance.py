@@ -10,7 +10,7 @@ from AI_Facial_Detection.face_detector import InsightFaceDetector
 from AI_Facial_Detection.overlay import draw_faces_overlay
 from AI_Facial_Detection.selection import face_selection
 from AI_Facial_Detection.supabase_matcher import SupabaseMatcher
-from attendance_manager import AttendanceManager
+from AI_Facial_Detection.attendance_manager import AttendanceManager
 
 
 print("Python:", sys.version)

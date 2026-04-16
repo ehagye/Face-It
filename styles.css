@@ -1,255 +1,213 @@
-/* ============================================
-   DARK THEME STYLES FOR FACE-IT DASHBOARD
-   ============================================ */
+/* ==================================================
+   FACE-IT MASTER STYLESHEET
+   Cleaned + Consolidated
+================================================== */
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
+    font-family: "Inter", system-ui, sans-serif;
 }
 
-html, body {
-    width: 100%;
-    height: 100%;
-    background: #0f172a;
-    color: #e2e8f0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    overflow-x: hidden;
+body.dark-bg {
+    background: radial-gradient(circle at top, #1a1f3c, #0b0e1a);
+    color: white;
+    margin: 0;
 }
 
-/* ============================================
-   TOP BAR / HEADER
-   ============================================ */
+.centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 
+.gradient-text {
+    background: linear-gradient(90deg, #8f8cff, #4fc3ff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    color: #aaa;
+}
+
+.warn {
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+.active {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+/* TOP BAR */
 .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 20px 30px;
     background: rgba(15, 23, 42, 0.95);
     border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-    backdrop-filter: blur(10px);
+}
 
+.top-bar h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.nav-actions {
     display: flex;
     gap: 1rem;
 }
 
 .nav-btn {
-    color: #cbd5e1;
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
-    font-size: 0.9rem;
+    display: inline-block;
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
 .nav-btn:hover {
-    background: rgba(148, 163, 184, 0.1);
-    color: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.4);
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
-/* ============================================
-   MAIN LAYOUT
-main.dashboard {
+.manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* WELCOME SECTION */
+.welcome-section {
     padding: 2rem;
-    height: calc(100vh - 180px);
-    overflow-y: auto;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-}
-   ============================================ */
-
-
-
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
 }
 
+.welcome-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #f1f5f9;
+    margin: 0 0 0.5rem 0;
+}
 
+.welcome-content p {
+    font-size: 1rem;
+    color: #cbd5e1;
+    margin: 0;
+}
 
-/* ============================================
-   GLASS CARD COMPONENT
-   ============================================ */
+.professor-name {
+    color: #10b981;
+    font-weight: 600;
+}
 
+/* GLASS CARD */
 .glass-card {
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.3s ease;
-}
-
-.glass-card:hover {
-    border-color: rgba(148, 163, 184, 0.4);
-    background: rgba(30, 41, 59, 0.8);
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
 .glass-card h3 {
+    margin: 0 0 1rem 0;
     font-size: 1.1rem;
-    font-weight: 600;
-    color: #f1f5f9;
-    margin-bottom: 1rem;
-    margin-top: 0;
 }
 
-.glass-card.status {
-    justify-content: center;
-    gap: 1rem;
+/* DASHBOARD */
+main.dashboard {
+    padding: 30px;
 }
 
-.glass-card.status p {
-    margin: 0;
-    font-size: 0.95rem;
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.column {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 25px;
 }
-
-.glass-card.status .inactive {
-    color: #94a3b8;
-}
-
-/* ============================================
-   CARD HEADER
-   ============================================ */
 
 .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 15px;
 }
 
 .card-header h3 {
     margin: 0;
-    flex: 1;
 }
 
-.manage-btn {
-    background: rgba(51, 65, 85, 0.7);
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    color: #cbd5e1;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-}
-
-.manage-btn:hover {
-    background: rgba(51, 65, 85, 1);
-    color: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.5);
-}
-
-.manage-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* ============================================
-   SELECT DROPDOWN
-   ============================================ */
-
-select {
-    background: rgba(51, 65, 85, 0.8);
-    border: 1px solid rgba(148, 163, 184, 0.3);
-    color: #f1f5f9;
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-select:hover {
-    border-color: rgba(148, 163, 184, 0.5);
-    background: rgba(51, 65, 85, 1);
-}
-
-select:focus {
+/* FORMS */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
     outline: none;
-    border-color: #10b981;
-    background: rgba(51, 65, 85, 1);
-}
-
-/* ============================================
-   ROSTER
-   ============================================ */
-
-.roster {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.roster .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background: rgba(51, 65, 85, 0.5);
-    border: 1px solid rgba(148, 163, 184, 0.15);
-    border-left: 4px solid transparent;
-    border-radius: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.roster .row:hover {
     background: rgba(51, 65, 85, 0.7);
-    border-color: rgba(148, 163, 184, 0.3);
+    color: #f1f5f9;
 }
 
-.roster .row.present {
-    background: rgba(16, 185, 129, 0.1);
-    border-left-color: #10b981;
-    border-color: rgba(16, 185, 129, 0.3);
+input:focus, select:focus {
+    box-shadow: 0 0 0 2px rgba(79, 195, 255, 0.35);
 }
 
-/* ============================================
-   ACTIVITY LOG
-   ============================================ */
+/* ROSTER & LOG */
+.roster {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
 
 .log {
-    flex: 1;
+    max-height: 220px;
     overflow-y: auto;
-    padding: 0.75rem;
-    background: rgba(15, 23, 42, 0.5);
-    border-radius: 0.5rem;
-    font-size: 0.85rem;
+    font-size: 14px;
 }
 
 .log p {
-    margin: 0.5rem 0;
+    margin: 8px 0;
     color: #cbd5e1;
-    font-family: 'Courier New', monospace;
-    line-height: 1.4;
 }
 
-/* ============================================
-   CAMERA FEED
-   ============================================ */
-
+/* CAMERA */
 .camera-feed-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/9;
     background: #000;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     overflow: hidden;
+    min-height: 240px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -258,154 +216,68 @@ select:focus {
 
 .camera-feed-wrapper video {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    border-radius: 8px;
     display: none;
 }
 
-.camera-feed-wrapper .subtitle {
-    color: #94a3b8;
-    font-size: 1rem;
-    text-align: center;
-    width: 100%;
+.camera-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
 
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-.dark-bg {
-    background: #0f172a;
+.camera-controls select {
+    max-width: 180px;
 }
 
-.subtitle {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin: 0.5rem 0 0 0;
+/* STATUS */
+.status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.status p {
+    margin: 8px 0;
+    color: #cbd5e1;
 }
 
 .inactive {
-    color: #94a3b8;
+    color: #ef4444;
 }
 
-.active {
-    color: #10b981;
-}
-
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
-
-.roster::-webkit-scrollbar,
-.log::-webkit-scrollbar {
-    width: 6px;
-}
-
-.roster::-webkit-scrollbar-track,
-.log::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
+/* BUTTONS */
+.primary-btn,
+.secondary-btn {
+    padding: 12px 20px;
     border-radius: 10px;
-}
-
-.roster::-webkit-scrollbar-thumb,
-.log::-webkit-scrollbar-thumb {
-    background: rgba(148, 163, 184, 0.3);
-    border-radius: 10px;
-}
-
-.roster::-webkit-scrollbar-thumb:hover,
-.log::-webkit-scrollbar-thumb:hover {
-    background: rgba(148, 163, 184, 0.5);
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-
-@media (max-width: 1200px) {
-    .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-    
-    main.dashboard {
-        height: auto;
-        min-height: calc(100vh - 180px);
-    }
-}
-
-/* Header Left Section */
-.header-left {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.header-left h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #f1f5f9;
-    margin: 0;
-}
-
-.professor-welcome {
-    font-size: 0.85rem;
-    color: #cbd5e1;
-    margin: 0;
-    font-weight: 400;
-}
-
-/* Home Page Buttons */
-.primary-btn, .secondary-btn {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    border-radius: 0.5rem;
+    color: white;
     text-decoration: none;
-    font-weight: 500;
-    font-size: 1rem;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
+    display: inline-block;
     cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    border: none;
 }
 
 .primary-btn {
-    background: #10b981;
-    color: #fff;
-}
-
-.primary-btn:hover {
-    background: #059669;
-    transform: translateY(-2px);
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
 }
 
 .secondary-btn {
-    background: transparent;
-    color: #cbd5e1;
-    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: #333;
 }
 
+.primary-btn:hover,
 .secondary-btn:hover {
-    background: rgba(148, 163, 184, 0.1);
-    color: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.6);
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
-/* ============================================
-   WELCOME SECTION
-   ============================================ */
-
+/* WELCOME SECTION */
 .welcome-section {
     padding: 2rem;
     background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
     border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-}
-
-.welcome-content {
-    max-width: 1400px;
-    margin: 0 auto;
 }
 
 .welcome-content h2 {
