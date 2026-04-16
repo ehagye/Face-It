@@ -108,7 +108,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 <section class="welcome-section">
     <div class="welcome-content">
         <h2><?php echo htmlspecialchars($welcome_msg); ?></h2>
-        <p>Welcome back, <span class="professor-name"><?php echo htmlspecialchars($professor_name); ?></span>! 👋</p>
+        <p>Welcome back, <span class="professor-name"><?php echo htmlspecialchars($professor_name); ?></span>! </p>
     </div>
 </section>
 
@@ -191,7 +191,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 
 <script>
 const CONFIG = {
-    wsUrl: "ws://192.10.80.102:8765",
+    wsUrl: "ws://localhost:8765",
     currentClass: null,
     currentStudents: [],
     attendanceRecord: new Map(),

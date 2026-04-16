@@ -1,11 +1,5 @@
 """
-attendance_server.py
-
-WebSocket server for real-time face detection + attendance logging.
-Uses proven detection from live_attendance.py with async WebSocket broadcasting.
-
-Usage:
-    python attendance_server.py --class-id 1
+attendance_server.py - WebSocket server for real-time face detection
 """
 
 import argparse
@@ -34,25 +28,20 @@ class AttendanceServer:
         self.matcher = SupabaseMatcher()
         self.attendance_manager = AttendanceManager()
         
-        # Get class info
         self.class_info = self.attendance_manager.get_class(class_id)
         if self.class_info is None:
             raise RuntimeError(f"Class {class_id} not found")
         
         print(f"[CLASS] {self.class_info.get('class_name')} (ID: {class_id})")
         
-        # Track logged students this session
         self.logged_this_session = set()
         self.clients = set()
         self.fps = 0.0
         self.frame_count = 0
         self.running = True
-        
-        # Thread-safe event queue for camera → WebSocket
-        self.event_queue = asyncio.Queue()
+        self.loop = None
     
     async def broadcast(self, event: dict):
-        """Send event to all WebSocket clients."""
         if self.clients:
             message = json.dumps(event)
             await asyncio.gather(
@@ -61,7 +50,6 @@ class AttendanceServer:
             )
     
     async def handle_client(self, websocket, path):
-        """Handle WebSocket client connection."""
         self.clients.add(websocket)
         print(f"[WS] Client connected ({len(self.clients)} total)")
         
@@ -85,7 +73,6 @@ class AttendanceServer:
             print(f"[WS] Client disconnected ({len(self.clients)} remain)")
     
     def run_camera_thread(self):
-        """Run camera detection in a separate thread (non-async)."""
         cap = cv2.VideoCapture(self.camera_index, cv2.CAP_DSHOW)
         if not cap.isOpened():
             print(f"[ERROR] Could not open camera {self.camera_index}")
@@ -101,10 +88,8 @@ class AttendanceServer:
                     time.sleep(0.01)
                     continue
                 
-                # Detect faces
                 faces, det_ms = self.detector.detect(frame)
                 
-                # Match each face
                 for face in faces:
                     if face.normed_embedding is None:
                         continue
@@ -117,7 +102,6 @@ class AttendanceServer:
                     if result:
                         student_id = result.student_id
                         
-                        # Log if not already logged this session
                         if student_id not in self.logged_this_session:
                             attendance_result = self.attendance_manager.log_attendance(
                                 student_id,
@@ -129,7 +113,6 @@ class AttendanceServer:
                             if attendance_result and attendance_result.logged:
                                 self.logged_this_session.add(student_id)
                                 
-                                # Queue event for WebSocket broadcast
                                 asyncio.run_coroutine_threadsafe(
                                     self.broadcast({
                                         "type": "face_detected",
@@ -146,7 +129,6 @@ class AttendanceServer:
                                 
                                 print(f"[LOGGED] {result.first_name} {result.last_name}")
                 
-                # FPS calculation & metrics broadcast
                 self.frame_count += 1
                 now = time.time()
                 if now - last_fps_time > 1.0:
@@ -171,10 +153,10 @@ class AttendanceServer:
             print("[CAMERA] Released")
     
     async def start(self, host: str = "0.0.0.0", port: int = 8765):
-        """Start WebSocket server and camera thread."""
+        import websockets
+        
         self.loop = asyncio.get_event_loop()
         
-        # Start camera in background thread
         camera_thread = threading.Thread(target=self.run_camera_thread, daemon=True)
         camera_thread.start()
         print(f"[CAMERA] Thread started")
@@ -182,7 +164,7 @@ class AttendanceServer:
         print(f"[SERVER] Starting WebSocket on ws://{host}:{port}")
         async with websockets.serve(self.handle_client, host, port):
             print(f"[SERVER] Listening for connections...")
-            await asyncio.Future()  # Run forever
+            await asyncio.Future()
 
 
 async def main():
