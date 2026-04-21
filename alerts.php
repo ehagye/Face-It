@@ -18,13 +18,14 @@ unset($_SESSION['success'], $_SESSION['error']);
 
 <header class="top-bar">
     <h1>Face-IT</h1>
-   <nav class="nav-actions">
-    <a href="main.php" class="nav-btn">Dashboard</a>
-    <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
-    <a href="alerts.php" class="nav-btn">Alerts</a>
-    <a href="settings.php" class="nav-btn">Settings</a>
-    <a href="logout.php" class="nav-btn">Log Out</a>
-</nav>
+    <nav class="nav-actions">
+        <a href="main.php" class="nav-btn">Dashboard</a>
+        <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+        <a href="Attendance_Report/report_filters.php" class="nav-btn">Attendance Reports</a>
+        <a href="alerts.php" class="nav-btn">Alerts</a>
+        <a href="settings.php" class="nav-btn">Settings</a>
+        <a href="logout.php" class="nav-btn">Log Out</a>
+    </nav>
 </header>
 
 <main class="dashboard">
@@ -37,7 +38,6 @@ unset($_SESSION['success'], $_SESSION['error']);
         </div>
     </section>
 </main>
-
 
 </body>
 </html>

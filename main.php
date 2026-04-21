@@ -21,12 +21,13 @@ if (empty($_SESSION['user'])) {
     <h1>Face-IT</h1>
 
     <nav class="nav-actions">
-    <a href="main.php" class="nav-btn">Dashboard</a>
-    <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
-    <a href="alerts.php" class="nav-btn">Alerts</a>
-    <a href="settings.php" class="nav-btn">Settings</a>
-    <a href="logout.php" class="nav-btn">Log Out</a>
-</nav>
+        <a href="main.php" class="nav-btn">Dashboard</a>
+        <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+        <a href="Attendance_Report/report_filters.php" class="nav-btn">Attendance Reports</a>
+        <a href="alerts.php" class="nav-btn">Alerts</a>
+        <a href="settings.php" class="nav-btn">Settings</a>
+        <a href="logout.php" class="nav-btn">Log Out</a>
+    </nav>
 </header>
 
 <main class="dashboard">
@@ -120,9 +121,6 @@ if (empty($_SESSION['user'])) {
         <div class="column">
 
             <!-- LIVE CAMERA FEED -->
-            <!-- Browser-side camera preview so the professor can see
-                what the camera sees. The actual face detection and
-                matching runs in a separate Python process. -->
             <div class="glass-card">
                 <div class="card-header">
                     <h3>Live Camera</h3>
@@ -183,18 +181,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// Dashboard camera feed
-// Shows a live preview from any connected camera so the
-// professor can monitor the room. Camera selector lets them
-// pick which device to use (e.g. built-in webcam vs USB cam)
-
 let dashStream = null;
 
-// Populate the camera dropdown with all available video devices
 async function loadCameraList() {
     const select = document.getElementById("cameraSelect");
 
-    // Need a temporary stream first so the browser reveals device labels
     try {
         const tempStream = await navigator.mediaDevices.getUserMedia({ video: true });
         tempStream.getTracks().forEach(t => t.stop());
@@ -215,7 +206,6 @@ async function loadCameraList() {
     });
 }
 
-// Start or stop the camera preview
 async function toggleCamera() {
     const video  = document.getElementById("dashCam");
     const btn    = document.getElementById("camToggle");
@@ -223,7 +213,6 @@ async function toggleCamera() {
     const indicator = document.getElementById("camIndicator");
 
     if (dashStream) {
-        // Stop the camera
         dashStream.getTracks().forEach(t => t.stop());
         dashStream = null;
         video.style.display = "none";
@@ -234,7 +223,6 @@ async function toggleCamera() {
         return;
     }
 
-    // Start the selected camera
     const deviceId = document.getElementById("cameraSelect").value;
     try {
         dashStream = await navigator.mediaDevices.getUserMedia({
@@ -252,7 +240,6 @@ async function toggleCamera() {
     }
 }
 
-// Load camera list when the page loads
 document.addEventListener("DOMContentLoaded", loadCameraList);
 </script>
 

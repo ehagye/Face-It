@@ -23,6 +23,7 @@ if (empty($_SESSION['user'])) {
     <nav class="nav-actions">
         <a href="main.php" class="nav-btn">Dashboard</a>
         <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
+        <a href="Attendance_Report/report_filters.php" class="nav-btn">Attendance Reports</a>
         <a href="alerts.php" class="nav-btn">Alerts</a>
         <a href="settings.php" class="nav-btn">Settings</a>
         <a href="logout.php" class="nav-btn">Log Out</a>
@@ -36,12 +37,10 @@ if (empty($_SESSION['user'])) {
 
   <section class="manage-grid">
 
-    <!-- ENROLL CLASS -->
     <div class="glass-card">
       <h3>Enroll New Class</h3>
 
       <form method="POST" action="/face-it/create_class.php">
-
         <div class="form-inline">
 
           <div>
@@ -62,16 +61,13 @@ if (empty($_SESSION['user'])) {
           <button type="submit">Enroll</button>
 
         </div>
-
       </form>
     </div>
 
-    <!-- DELETE CLASS -->
     <div class="glass-card">
       <h3>Delete Class</h3>
 
       <form class="manage-form" method="POST" action="delete_class.php">
-
         <div class="form-inline small">
 
           <div>
@@ -82,20 +78,15 @@ if (empty($_SESSION['user'])) {
           <button type="submit" class="danger-btn">Delete</button>
 
         </div>
-
       </form>
-
     </div>
 
   </section>
 
-  <!-- CURRENT CLASSES -->
   <section class="glass-card table-wrap">
-
     <h3>Current Classes</h3>
 
     <table class="class-table">
-
       <thead>
         <tr>
           <th>CRN</th>
@@ -111,9 +102,7 @@ if (empty($_SESSION['user'])) {
           <td>Capstone ICTW</td>
         </tr>
       </tbody>
-
     </table>
-
   </section>
 
 </main>

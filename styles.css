@@ -437,3 +437,279 @@ input:focus, select:focus {
 .camera-controls select {
     max-width: 180px;
 }
+
+/* ============================================================
+   12. ATTENDANCE REPORT PAGE
+   ============================================================ */
+
+.report-page-grid {
+    align-items: start;
+}
+
+.report-hero-card {
+    margin-bottom: 25px;
+}
+
+.report-filter-card,
+.report-preview-card {
+    min-height: 100px;
+}
+
+.report-form .field {
+    margin-bottom: 18px;
+}
+
+.report-field-note {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.report-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.report-button-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.report-download-btn {
+    min-width: 150px;
+    text-align: center;
+}
+
+.report-download-btn.is-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.report-preview-container {
+    min-height: 220px;
+}
+
+.report-preview-empty,
+.report-preview-loading {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    color: #aaa;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.report-preview-container h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.report-preview-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.report-preview-container th,
+.report-preview-container td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+    color: white;
+}
+
+.report-preview-container th {
+    color: #aaa;
+    font-weight: 600;
+    background: rgba(255,255,255,0.05);
+}
+
+.report-preview-container .day-separator td {
+    border-top: 4px solid rgba(79, 195, 255, 0.8) !important;
+}
+
+/* DARKER INPUTS / DROPDOWNS FOR REPORT PAGE */
+.report-form input,
+.report-form select,
+.report-student-search {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.report-form input::placeholder,
+.report-student-search::placeholder {
+    color: #b8b8b8;
+}
+
+.report-form input:focus,
+.report-form select:focus,
+.report-student-search:focus {
+    box-shadow: 0 0 0 2px rgba(79, 195, 255, 0.35);
+    border-color: rgba(79, 195, 255, 0.35);
+}
+
+/* This affects many browsers' dropdown popup area / selected area */
+.report-form select option {
+    background: #2b2f3f;
+    color: white;
+}
+
+/* Optional improvement for calendar picker icon visibility on dark background */
+.report-form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.9;
+}
+
+.report-student-picker {
+    margin-top: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    padding: 14px;
+}
+
+.report-student-picker.disabled {
+    opacity: 0.6;
+}
+
+.report-student-search {
+    margin-top: 0 !important;
+    margin-bottom: 10px;
+}
+
+.report-student-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.report-student-actions .manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 14px;
+}
+
+.report-student-list {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    max-height: 240px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.18);
+}
+
+.report-student-item {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    user-select: none;
+    color: white;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.report-student-item:last-child {
+    border-bottom: none;
+}
+
+.report-student-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.report-student-item.selected {
+    background: rgba(79, 195, 255, 0.22);
+    color: white;
+    font-weight: 600;
+}
+
+.report-student-empty {
+    padding: 14px;
+    color: #aaa;
+}
+
+.report-selected-students {
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* COLUMNS TO INCLUDE: FORCE ONE ROW */
+.report-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    align-items: stretch;
+}
+
+.report-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: white;
+    font-weight: 400;
+    overflow: hidden;
+}
+
+.report-checkbox-item input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.report-checkbox-item span {
+    min-width: 0;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* RESPONSIVE FALLBACKS */
+@media (max-width: 1200px) {
+    .report-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .report-checkbox-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .report-checkbox-item span {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 900px) {
+    .report-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* on smaller screens allow wrapping because forcing one row would get too cramped */
+    .report-checkbox-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .report-checkbox-item span {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        font-size: 12px;
+    }
+}
