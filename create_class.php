@@ -10,7 +10,7 @@ $SUPABASE_KEY = $config['SUPABASE_KEY'];
 
 // 1. Validate input
 if (
-    empty($_POST['class_id']) ||
+    !isset($_POST['class_id']) || $_POST['class_id'] === '' ||
     empty($_POST['class_name']) ||
     empty($_POST['scheduled_start_time'])
 ) {

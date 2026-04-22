@@ -21,7 +21,9 @@ $baseHeaders = [
 
 // Handle POST: save edits
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['class_id'])) die("Missing class_id");
+    if (!isset($_POST['class_id']) || $_POST['class_id'] === '') {
+        die("Missing class_id");
+    }
 
     $class_id = (int) $_POST['class_id'];
 
@@ -53,7 +55,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Handle GET: load class and show form
-if (empty($_GET['class_id'])) die("Missing class_id");
+if (!isset($_GET['class_id']) || $_GET['class_id'] === '') {
+    die("Missing class_id");
+}
 $class_id = (int) $_GET['class_id'];
 
 $ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq.$class_id&select=*");
