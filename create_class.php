@@ -13,6 +13,6 @@ if (
 $classData = [
     "class_id"             => (int) $_POST['class_id'],
     "class_name"           => trim($_POST['class_name']),
-    "scheduled_start_time" => trim($_POST['scheduled_start_time']), // e.g. "09:30:00"
+    //"scheduled_start_time" => trim($_POST['scheduled_start_time']), // e.g. "09:30:00"
     "professor_id"         => !empty($_POST['professor_id']) ? (int) $_POST['professor_id'] : null,
 ];
