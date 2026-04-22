@@ -5,6 +5,28 @@ if (empty($_SESSION['user'])) {
     header("Location: home.php");
     exit;
 }
+
+$config = require __DIR__ . '/config.php';
+$SUPABASE_URL = $config['SUPABASE_URL'];
+$SUPABASE_KEY = $config['SUPABASE_KEY'];
+
+// Grab and clear any success message from a redirect
+$successMsg = $_SESSION['success'] ?? null;
+unset($_SESSION['success']);
+
+// Fetch all classes
+$ch = curl_init("$SUPABASE_URL/rest/v1/classes?select=*&order=class_id");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        "Authorization: Bearer $SUPABASE_KEY",
+        "apikey: $SUPABASE_KEY",
+    ],
+]);
+$classesJson = curl_exec($ch);
+curl_close($ch);
+
+$classes = json_decode($classesJson, true) ?: [];
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +57,12 @@ if (empty($_SESSION['user'])) {
   <h2 class="gradient-text">Manage Classes</h2>
   <p class="subtitle">Create, edit, or remove courses</p>
 
+  <?php if ($successMsg): ?>
+    <div class="glass-card success-banner">
+      <?= htmlspecialchars($successMsg) ?>
+    </div>
+  <?php endif; ?>
+
   <section class="manage-grid">
 
     <div class="glass-card">
@@ -44,18 +72,18 @@ if (empty($_SESSION['user'])) {
         <div class="form-inline">
 
           <div>
-            <label class="subtitle">CRN</label>
-            <input type="text" name="crn" placeholder="12345" required>
-          </div>
-
-          <div>
             <label class="subtitle">Class ID</label>
-            <input type="text" name="class_id" placeholder="ICTW004" required>
+            <input type="text" name="class_id" placeholder="101" required>
           </div>
 
           <div>
             <label class="subtitle">Class Name</label>
             <input type="text" name="class_name" placeholder="Capstone ICTW" required>
+          </div>
+
+          <div>
+            <label class="subtitle">Start Time</label>
+            <input type="time" name="scheduled_start_time" required>
           </div>
 
           <button type="submit">Enroll</button>
@@ -72,7 +100,7 @@ if (empty($_SESSION['user'])) {
 
           <div>
             <label class="subtitle">Class ID</label>
-            <input type="text" name="class_id" placeholder="ICTW004" required>
+            <input type="text" name="class_id" placeholder="101" required>
           </div>
 
           <button type="submit" class="danger-btn">Delete</button>
@@ -89,18 +117,29 @@ if (empty($_SESSION['user'])) {
     <table class="class-table">
       <thead>
         <tr>
-          <th>CRN</th>
           <th>Class ID</th>
           <th>Class Name</th>
+          <th>Start Time</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr>
-          <td>12345</td>
-          <td>ICTW004</td>
-          <td>Capstone ICTW</td>
-        </tr>
+        <?php if (empty($classes)): ?>
+          <tr><td colspan="4">No classes yet.</td></tr>
+        <?php else: ?>
+          <?php foreach ($classes as $c): ?>
+            <tr>
+              <td><?= htmlspecialchars($c['class_id']) ?></td>
+              <td><?= htmlspecialchars($c['class_name']) ?></td>
+              <td><?= htmlspecialchars($c['scheduled_start_time']) ?></td>
+              <td>
+                <a href="edit_class.php?class_id=<?= urlencode($c['class_id']) ?>"
+                   class="nav-btn">Edit</a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </tbody>
     </table>
   </section>

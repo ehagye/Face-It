@@ -11,16 +11,18 @@ $SUPABASE_KEY = $config['SUPABASE_KEY'];
 // 1. Validate input
 if (
     empty($_POST['class_id']) ||
-    empty($_POST['class_name'])
+    empty($_POST['class_name']) ||
+    empty($_POST['scheduled_start_time'])
 ) {
     die("Missing required fields");
 }
 
 // 2. Prepare class data
 $classData = [
-    "class_id"     => (int) $_POST['class_id'],
-    "class_name"   => trim($_POST['class_name']),
-    "professor_id" => !empty($_POST['professor_id']) ? (int) $_POST['professor_id'] : null,
+    "class_id"             => (int) $_POST['class_id'],
+    "class_name"           => trim($_POST['class_name']),
+    "scheduled_start_time" => trim($_POST['scheduled_start_time']),
+    "professor_id"         => !empty($_POST['professor_id']) ? (int) $_POST['professor_id'] : null,
 ];
 
 // 3. Insert into Supabase
@@ -41,12 +43,14 @@ $dbResponse = curl_exec($ch);
 $dbStatus   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
+// 4. Handle result
 if ($dbStatus !== 201) {
     echo "<h3>Class creation failed (status: $dbStatus)</h3>";
-    echo "<pre>$dbResponse</pre>";
+    echo "<pre>" . htmlspecialchars($dbResponse) . "</pre>";
     exit;
 }
 
+// 5. Redirect back
 $_SESSION['success'] = "Class created successfully!";
 header("Location: manage_classes.php");
 exit;
