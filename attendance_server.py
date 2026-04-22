@@ -156,6 +156,9 @@ class AttendanceServer:
             print("[CAMERA] Released")
     
     async def start(self, host: str = "0.0.0.0", port: int = 8765):
+        import os
+        port = int(os.environ.get("PORT", port))
+        
         import websockets
         
         self.loop = asyncio.get_event_loop()
@@ -164,8 +167,8 @@ class AttendanceServer:
         camera_thread.start()
         print(f"[CAMERA] Thread started")
         
-        print(f"[SERVER] Starting WebSocket on ws://{host}:{port}")
-        async with websockets.serve(self.handle_client, host, port):
+        print(f"[SERVER] Starting WebSocket on ws://0.0.0.0:{port}")
+        async with websockets.serve(self.handle_client, "0.0.0.0", port):
             print(f"[SERVER] Listening for connections...")
             await asyncio.Future()
 
