@@ -19,7 +19,7 @@ if (
 
 // 2. Prepare class data
 $classData = [
-    "class_id"             => (int) $_POST['class_id'],
+    "class_id"             => trim($_POST['class_id']),
     "class_name"           => trim($_POST['class_name']),
     "scheduled_start_time" => trim($_POST['scheduled_start_time']),
     "professor_id"         => !empty($_POST['professor_id']) ? (int) $_POST['professor_id'] : null,
