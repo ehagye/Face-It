@@ -1,6 +1,9 @@
 """
 attendance_server.py - WebSocket server for real-time face detection
 """
+import os
+os.environ['DISPLAY'] = ''
+os.environ['QT_QPA_PLATFORM'] = 'offscreen'
 
 import argparse
 import asyncio
@@ -73,7 +76,7 @@ class AttendanceServer:
             print(f"[WS] Client disconnected ({len(self.clients)} remain)")
     
     def run_camera_thread(self):
-        cap = cv2.VideoCapture(self.camera_index, cv2.CAP_DSHOW)
+        cap = cv2.VideoCapture(self.camera_index)
         if not cap.isOpened():
             print(f"[ERROR] Could not open camera {self.camera_index}")
             return

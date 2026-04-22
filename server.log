@@ -1,0 +1,2 @@
+C:\Users\clpur\Codin\classes\CAPSTONE\Face-It\venv\lib\site-packages\onnxruntime\capi\onnxruntime_inference_collection.py:69: UserWarning: Specified provider 'CUDAExecutionProvider' is not in available provider names.Available providers: 'AzureExecutionProvider, CPUExecutionProvider'
+  warnings.warn(

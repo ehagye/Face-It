@@ -1,4 +1,5 @@
 <?php
+header("Content-Security-Policy: default-src 'unsafe-inline' *.gsu.edu; connect-src 'self' wss://codd.cs.gsu.edu:8765 wss://*.gsu.edu:8765 ws://192.10.80.102:8765 wss://192.10.80.102:8765");
 session_start();
 
 if (empty($_SESSION['user'])) {
@@ -191,7 +192,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 
 <script>
 const CONFIG = {
-    wsUrl: "ws://localhost:8765",
+    wsUrl: "wss://192.10.80.102:8765",
     currentClass: null,
     currentStudents: [],
     attendanceRecord: new Map(),
