@@ -303,36 +303,35 @@ function addActivityLog(message) {
 async function handleClassChange() {
     const select = document.getElementById('classSelect');
     const classId = select.value;
-
-    if (!classId) {
-        document.getElementById('rosterContainer').innerHTML = '<p style="color: #94a3b8; padding: 1rem; text-align: center;">Select a class above</p>';
-        CONFIG.currentClass = null;
-        CONFIG.currentStudents = [];
-        CONFIG.attendanceRecord.clear();
-        document.getElementById('camToggle').disabled = true;
-        addActivityLog('Class deselected');
-        return;
-    }
+    if (!classId) { /* ...existing reset logic... */ return; }
 
     CONFIG.currentClass = classId;
-    CONFIG.attendanceRecord.clear();
+    addActivityLog('Starting detection server...');
 
+    // 1. Spin up the Python server for this class
+    try {
+        const res = await fetch(`start_server.php?class_id=${classId}`);
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+        addActivityLog('✓ Server started for class');
+    } catch (e) {
+        addActivityLog('✗ Could not start server: ' + e.message);
+    }
+
+    // 2. Reconnect WebSocket (server just restarted)
+    if (ws) ws.close();
+    setTimeout(connectWebSocket, 1000);
+
+    // 3. Load roster (your existing code)
     try {
         const response = await fetch(`get_students_by_class.php?class_id=${classId}`);
         const data = await response.json();
-
-        if (!data.success) throw new Error(data.error || 'Unknown error');
-
         CONFIG.currentStudents = data.students || [];
         renderRoster(CONFIG.currentStudents);
-
-        addActivityLog(`✓ Loaded class (${CONFIG.currentStudents.length} students)`);
+        addActivityLog(`✓ Loaded ${CONFIG.currentStudents.length} students`);
         document.getElementById('camToggle').disabled = false;
-
     } catch (e) {
-        console.error('Failed to load students:', e);
         addActivityLog('✗ Failed to load roster: ' + e.message);
-        document.getElementById('camToggle').disabled = true;
     }
 }
 

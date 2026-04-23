@@ -11,8 +11,7 @@ echo ╚════════════════════════
 echo.
 
 REM Configuration
-set "PROJECT_DIR=C:\Users\clpur\Codin\classes\CAPSTONE\Face-It"
-set "CLASS_ID=4"
+set "PROJECT_DIR=%~dp0"set "CLASS_ID=4"
 set "CAMERA=0"
 set "HTTP_SERVER="
 
