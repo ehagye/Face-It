@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 import numpy as np
-from dotenv import load_dotenv
+from python_dotenv import load_dotenv
 from supabase import create_client, Client
 
 
