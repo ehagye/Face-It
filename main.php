@@ -88,6 +88,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' *.gsu.edu; connect-src 'self' wss://codd.cs.gsu.edu:8765 wss://*.gsu.edu:8765 ws://192.10.80.102:8765 wss://192.10.80.102:8765 wss://face-it-server.onrender.com">
     <title>Face-IT Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
