@@ -192,7 +192,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 
 <script>
 const CONFIG = {
-    wsUrl: "wss://192.10.80.102:8765",
+    wsUrl: "wss://face-it-server.onrender.com",
     currentClass: null,
     currentStudents: [],
     attendanceRecord: new Map(),
