@@ -10,11 +10,6 @@ $professor_email = $_SESSION['user']['email'];
 
 $config = require __DIR__ . '/config.php';
 
-var_dump($config);
-var_dump(getenv('SUPABASE_URL'));
-var_dump(getenv('SUPABASE_KEY'));
-exit;
-
 function get_professor_id($email, $config) {
     $url = $config['SUPABASE_URL'] . "/rest/v1/professors?select=professor_id,first_name,last_name,email";
     
