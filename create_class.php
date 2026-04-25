@@ -1,37 +1,28 @@
 <?php
-
-
-echo "CREATE CLASS FILE LOADED";
-exit;
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-// SERVER SIDE ONLY safe place for secrets
-$config = require 'config.php';
-
+$config = require __DIR__ . '/config.php';
 $SUPABASE_URL = $config['SUPABASE_URL'];
 $SUPABASE_SERVICE_ROLE_KEY = $config['SUPABASE_SERVICE_ROLE_KEY'];
 
-// Auth check
-// add l8r
-
 // 1. Validate input
 if (
-    empty($_POST['crn']) ||
-    empty($_POST['class_id']) ||
-    empty($_POST['class_name'])
+    !isset($_POST['class_id']) || $_POST['class_id'] === '' ||
+    empty($_POST['class_name']) ||
+    empty($_POST['scheduled_start_time'])
 ) {
     die("Missing required fields");
 }
 
-$crn        = trim($_POST['crn']);
-$class_id   = trim($_POST['class_id']);
-$class_name = trim($_POST['class_name']);
-
 // 2. Prepare class data
 $classData = [
-    "crn"        => $crn,
-    "class_id"   => $class_id,
-    "class_name" => $class_name
+    "class_id"             => trim($_POST['class_id']),
+    "class_name"           => trim($_POST['class_name']),
+    "scheduled_start_time" => trim($_POST['scheduled_start_time']),
+    "professor_id"         => !empty($_POST['professor_id']) ? (int) $_POST['professor_id'] : null,
 ];
 
 // 3. Insert into Supabase
@@ -54,8 +45,8 @@ curl_close($ch);
 
 // 4. Handle result
 if ($dbStatus !== 201) {
-    echo "<h3>Class creation failed</h3>";
-    echo "<pre>$dbResponse</pre>";
+    echo "<h3>Class creation failed (status: $dbStatus)</h3>";
+    echo "<pre>" . htmlspecialchars($dbResponse) . "</pre>";
     exit;
 }
 

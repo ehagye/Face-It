@@ -1,0 +1,49 @@
+<?php
+session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+if (empty($_SESSION['user'])) {
+    header("Location: home.php");
+    exit;
+}
+
+$config = require __DIR__ . '/config.php';
+$SUPABASE_URL = $config['SUPABASE_URL'];
+$SUPABASE_KEY = $config['SUPABASE_KEY'];
+
+// 1. Validate input
+if (empty(trim($_POST['class_id'] ?? ''))) {
+    die("Missing class_id");
+}
+
+$class_id = trim($_POST['class_id']);
+
+// 2. Send DELETE to Supabase
+$ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq." . urlencode($class_id));
+curl_setopt_array($ch, [
+    CURLOPT_CUSTOMREQUEST => "DELETE",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        "Authorization: Bearer $SUPABASE_KEY",
+        "apikey: $SUPABASE_KEY",
+        "Prefer: return=minimal",
+    ],
+]);
+
+$response = curl_exec($ch);
+$status   = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+// 3. Handle result
+if ($status !== 204) {
+    echo "<h3>Delete failed (status: $status)</h3>";
+    echo "<pre>" . htmlspecialchars($response) . "</pre>";
+    exit;
+}
+
+// 4. Redirect back
+$_SESSION['success'] = "Class deleted successfully!";
+header("Location: manage_classes.php");
+exit;
