@@ -171,7 +171,7 @@ async def main():
     import websockets
     
     parser = argparse.ArgumentParser()
-    parser.add_argument("--class-id", type=str, required=True)
+    parser.add_argument("--class-id", type=int, required=True)
     parser.add_argument("--grace-minutes", type=int, default=15)
     parser.add_argument("--threshold", type=float, default=0.55)
     parser.add_argument("--camera", type=int, default=0)
