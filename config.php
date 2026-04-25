@@ -1,5 +1,3 @@
-
-
 <?php
 return [
     "SUPABASE_URL" => getenv('SUPABASE_URL'),
