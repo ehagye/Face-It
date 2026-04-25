@@ -1,5 +1,5 @@
 <?php
-header("Content-Security-Policy: default-src 'unsafe-inline' *.gsu.edu; connect-src 'self' wss://codd.cs.gsu.edu:8765 wss://*.gsu.edu:8765 ws://192.10.80.102:8765 wss://192.10.80.102:8765 wss://face-it-server.onrender.com");
+header("Content-Security-Policy: default-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';");
 session_start();
 
 if (empty($_SESSION['user'])) {
@@ -88,7 +88,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'unsafe-inline' *.gsu.edu; connect-src 'self' wss://codd.cs.gsu.edu:8765 wss://*.gsu.edu:8765 ws://192.10.80.102:8765 wss://192.10.80.102:8765 wss://face-it-server.onrender.com">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
     <title>Face-IT Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -193,7 +193,7 @@ $welcome_msg = $welcome_messages[array_rand($welcome_messages)];
 
 <script>
 const CONFIG = {
-    wsUrl: "wss://face-it-server.onrender.com",
+    wsUrl: "ws://192.10.80.102:8765",
     currentClass: null,
     currentStudents: [],
     attendanceRecord: new Map(),

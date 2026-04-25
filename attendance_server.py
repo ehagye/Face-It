@@ -1,5 +1,5 @@
 """
-attendance_server.py - WebSocket server for real-time face detection
+attendance_server.py - WebSocket server for real-time face detection (FIXED)
 """
 import os
 os.environ['DISPLAY'] = ''
@@ -45,30 +45,48 @@ class AttendanceServer:
         self.loop = None
     
     async def broadcast(self, event: dict):
+        """Broadcast event to all connected clients"""
         if self.clients:
             message = json.dumps(event)
-            await asyncio.gather(
-                *[client.send(message) for client in self.clients],
-                return_exceptions=True
-            )
+            # Create copy of clients set to avoid "Set changed during iteration" error
+            clients_copy = list(self.clients)
+            disconnected = []
+            
+            for client in clients_copy:
+                try:
+                    await client.send(message)
+                except Exception as e:
+                    print(f"[WS] Broadcast error: {e}")
+                    disconnected.append(client)
+            
+            # Clean up disconnected clients
+            for client in disconnected:
+                self.clients.discard(client)
     
-    async def handle_client(self, websocket, path):
+    async def handle_client(self, websocket):
+        """Handle incoming WebSocket client connection"""
         self.clients.add(websocket)
         print(f"[WS] Client connected ({len(self.clients)} total)")
         
-        await websocket.send(json.dumps({
-            "type": "session_start",
-            "class_id": self.class_id,
-            "class_name": self.class_info.get('class_name'),
-            "scheduled_start_time": str(self.class_info.get('scheduled_start_time', ''))
-        }))
-        
         try:
+            # Send session start message
+            await websocket.send(json.dumps({
+                "type": "session_start",
+                "class_id": self.class_id,
+                "class_name": self.class_info.get('class_name'),
+                "scheduled_start_time": str(self.class_info.get('scheduled_start_time', ''))
+            }))
+            
+            # Listen for client messages
             async for message in websocket:
-                data = json.loads(message)
-                if data.get('action') == 'set_threshold':
-                    self.match_threshold = data.get('threshold', 0.55)
-                    print(f"[THRESHOLD] Set to {self.match_threshold:.2f}")
+                try:
+                    data = json.loads(message)
+                    if data.get('action') == 'set_threshold':
+                        self.match_threshold = data.get('threshold', 0.55)
+                        print(f"[THRESHOLD] Set to {self.match_threshold:.2f}")
+                except json.JSONDecodeError:
+                    print(f"[WS] Invalid JSON received")
+                    
         except Exception as e:
             print(f"[WS] Client error: {e}")
         finally:
@@ -76,6 +94,7 @@ class AttendanceServer:
             print(f"[WS] Client disconnected ({len(self.clients)} remain)")
     
     def run_camera_thread(self):
+        """Run camera detection in separate thread"""
         cap = cv2.VideoCapture(self.camera_index)
         if not cap.isOpened():
             print(f"[ERROR] Could not open camera {self.camera_index}")
@@ -116,6 +135,7 @@ class AttendanceServer:
                             if attendance_result and attendance_result.logged:
                                 self.logged_this_session.add(student_id)
                                 
+                                # Use create_task instead of run_coroutine_threadsafe
                                 asyncio.run_coroutine_threadsafe(
                                     self.broadcast({
                                         "type": "face_detected",
@@ -151,31 +171,40 @@ class AttendanceServer:
                 
                 time.sleep(0.001)
         
+        except Exception as e:
+            print(f"[CAMERA] Error: {e}")
         finally:
             cap.release()
             print("[CAMERA] Released")
     
     async def start(self, host: str = "0.0.0.0", port: int = 8765):
+        """Start the WebSocket server"""
         import os
         port = int(os.environ.get("PORT", port))
         
         import websockets
         
+        # Get the running event loop
         self.loop = asyncio.get_event_loop()
         
+        # Start camera thread
         camera_thread = threading.Thread(target=self.run_camera_thread, daemon=True)
         camera_thread.start()
         print(f"[CAMERA] Thread started")
         
+        # Start WebSocket server
         print(f"[SERVER] Starting WebSocket on ws://0.0.0.0:{port}")
-        async with websockets.serve(self.handle_client, "0.0.0.0", port):
+        async with websockets.serve(self.handle_client, host, port):
             print(f"[SERVER] Listening for connections...")
-            await asyncio.Future()
+            try:
+                await asyncio.Future()  # Run forever
+            except KeyboardInterrupt:
+                print("\n[SERVER] Shutting down...")
+                self.running = False
 
 
 async def main():
-    import websockets
-    
+    """Main entry point"""
     parser = argparse.ArgumentParser()
     parser.add_argument("--class-id", type=int, required=True)
     parser.add_argument("--grace-minutes", type=int, default=15)
@@ -186,20 +215,25 @@ async def main():
     
     args = parser.parse_args()
     
-    server = AttendanceServer(
-        class_id=args.class_id,
-        grace_minutes=args.grace_minutes,
-        match_threshold=args.threshold,
-        camera_index=args.camera
-    )
-    
     try:
+        server = AttendanceServer(
+            class_id=args.class_id,
+            grace_minutes=args.grace_minutes,
+            match_threshold=args.threshold,
+            camera_index=args.camera
+        )
+        
         await server.start(host=args.host, port=args.port)
     except KeyboardInterrupt:
-        print("\n[SERVER] Shutting down...")
-        server.running = False
+        print("\n[SERVER] Interrupted by user")
+    except Exception as e:
+        print(f"\n[SERVER] Fatal error: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 if __name__ == "__main__":
-    import websockets
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nShutdown complete")
