@@ -18,3 +18,5 @@ __pycache__/
 # test files
 test_attendance_time.py
 managerTest.py
+
+vendor/
