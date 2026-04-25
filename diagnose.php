@@ -1,7 +1,11 @@
 <?php
-ob_start();
-require 'config.php';
-ob_end_clean();
+session_start();
+if (empty($_SESSION['user'])) {
+    http_response_code(403);
+    die("Forbidden");
+}
+
+$config = require __DIR__ . '/config.php';
 
 echo "<pre style='background: #1e293b; color: #e2e8f0; padding: 20px; font-family: monospace;'>";
 
@@ -11,7 +15,7 @@ echo "<pre style='background: #1e293b; color: #e2e8f0; padding: 20px; font-famil
 function check_professors($config) {
     echo "=== PROFESSORS TABLE ===\n";
     $url = $config['SUPABASE_URL'] . "/rest/v1/professors?select=*";
-    
+
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -20,13 +24,13 @@ function check_professors($config) {
             "apikey: {$config['SUPABASE_KEY']}"
         ]
     ]);
-    
+
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     echo "HTTP Code: $http_code\n\n";
-    
+
     if ($http_code === 200) {
         $professors = json_decode($response, true);
         if (empty($professors)) {
@@ -53,7 +57,7 @@ function check_professors($config) {
 function check_classes($config) {
     echo "=== CLASSES TABLE ===\n";
     $url = $config['SUPABASE_URL'] . "/rest/v1/classes?select=*";
-    
+
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -62,13 +66,13 @@ function check_classes($config) {
             "apikey: {$config['SUPABASE_KEY']}"
         ]
     ]);
-    
+
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     echo "HTTP Code: $http_code\n\n";
-    
+
     if ($http_code === 200) {
         $classes = json_decode($response, true);
         if (empty($classes)) {
@@ -96,7 +100,7 @@ function check_classes($config) {
 function check_students($config) {
     echo "=== STUDENTS TABLE ===\n";
     $url = $config['SUPABASE_URL'] . "/rest/v1/students?select=student_id,first_name,last_name,class_id";
-    
+
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -105,13 +109,13 @@ function check_students($config) {
             "apikey: {$config['SUPABASE_KEY']}"
         ]
     ]);
-    
+
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     echo "HTTP Code: $http_code\n\n";
-    
+
     if ($http_code === 200) {
         $students = json_decode($response, true);
         if (empty($students)) {
@@ -138,9 +142,9 @@ function check_students($config) {
 function test_professor_lookup($email, $config) {
     echo "=== TEST: LOOKUP PROFESSOR BY EMAIL ===\n";
     echo "Looking for: $email\n\n";
-    
+
     $url = $config['SUPABASE_URL'] . "/rest/v1/professors?select=professor_id,first_name,last_name,email";
-    
+
     $ch = curl_init($url);
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
@@ -149,20 +153,20 @@ function test_professor_lookup($email, $config) {
             "apikey: {$config['SUPABASE_KEY']}"
         ]
     ]);
-    
+
     $response = curl_exec($ch);
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
-    
+
     if ($http_code === 200) {
         $professors = json_decode($response, true) ?? [];
-        
+
         $found = null;
         foreach ($professors as $prof) {
             echo "Comparing:\n";
             echo "  Database: '" . $prof['email'] . "' (length: " . strlen($prof['email']) . ")\n";
             echo "  Looking:  '" . $email . "' (length: " . strlen($email) . ")\n";
-            
+
             if (strtolower($prof['email']) === strtolower($email)) {
                 $found = $prof;
                 echo "  ✓ MATCH!\n\n";
@@ -171,7 +175,7 @@ function test_professor_lookup($email, $config) {
                 echo "  ✗ No match\n\n";
             }
         }
-        
+
         if ($found) {
             echo "✓ Professor found:\n";
             echo "  ID: {$found['professor_id']}\n";
@@ -193,4 +197,3 @@ check_students($config);
 test_professor_lookup('professor@faceit.edu', $config);
 
 echo "</pre>";
-?>
