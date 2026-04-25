@@ -12,11 +12,6 @@ if (empty($_SESSION['user'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-<<<<<<< HEAD
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
-=======
->>>>>>> parent of 7563cdb (Merge branch 'dashboardalerts')
     <title>Face-IT Dashboard</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -162,15 +157,6 @@ if (empty($_SESSION['user'])) {
 </main>
 
 <script>
-<<<<<<< HEAD
-const CONFIG = {
-    wsUrl: "ws://192.10.80.102:8765",
-    currentClass: null,
-    currentStudents: [],
-    attendanceRecord: new Map(),
-    attendanceRunning: false
-};
-=======
 document.addEventListener("DOMContentLoaded", () => {
 
     const ctx = document.getElementById("attendanceChart").getContext("2d");
@@ -195,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
->>>>>>> parent of 7563cdb (Merge branch 'dashboardalerts')
 
 let dashStream = null;
 
