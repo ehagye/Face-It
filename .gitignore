@@ -14,10 +14,7 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.pyc
 
 # test files
 test_attendance_time.py
 managerTest.py
-
-vendor/

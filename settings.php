@@ -1,6 +1,8 @@
+
 <?php
 session_start();
 
+// If user is NOT logged in, send them to home page
 if (!isset($_SESSION['user'])) {
     header("Location: home.html");
     exit;
@@ -22,7 +24,6 @@ if (!isset($_SESSION['user'])) {
     <nav class="nav-actions">
         <a href="main.php" class="nav-btn">Dashboard</a>
         <a href="manage_classes.php" class="nav-btn">Manage Classes</a>
-        <a href="Attendance_Report/report_filters.php" class="nav-btn">Attendance Reports</a>
         <a href="alerts.php" class="nav-btn">Alerts</a>
         <a href="settings.php" class="nav-btn">Settings</a>
         <a href="logout.php" class="nav-btn">Log Out</a>
