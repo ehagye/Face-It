@@ -46,7 +46,7 @@ function supabase_request(string $method, string $path, array $queryParams = [])
 }
 
 function build_attendance_query_params(
-    int $classId,
+    string $classId,                 // CHANGED: int -> string
     ?string $startDate = null,
     ?string $endDate = null,
     array $studentIds = [],
@@ -104,7 +104,7 @@ function get_students_by_ids(array $studentIds): array
     return $studentsById;
 }
 
-function get_students_for_class(int $classId): array
+function get_students_for_class(string $classId): array     // CHANGED: int -> string
 {
     $attendanceRows = supabase_request(
         'GET',
@@ -151,7 +151,7 @@ function get_students_for_class(int $classId): array
     return $students;
 }
 
-function get_class_by_id(int $classId): ?array
+function get_class_by_id(string $classId): ?array     // CHANGED: int -> string
 {
     $rows = supabase_request(
         'GET',
@@ -236,76 +236,4 @@ function get_available_report_columns(): array
         'status_formatted'      => 'Status',
         'confidence_score'      => 'Confidence Score',
     ];
-}
-
-function get_default_report_columns(): array
-{
-    return [
-        'student_id',
-        'first_name',
-        'last_name',
-        'detected_at_formatted',
-        'status_formatted',
-        'confidence_score',
-    ];
-}
-
-function get_attendance_report_rows(
-    int $classId,
-    ?string $startDate = null,
-    ?string $endDate = null,
-    array $studentIds = [],
-    string $sortOrder = 'desc'
-): array {
-    $queryParams = build_attendance_query_params(
-        $classId,
-        $startDate,
-        $endDate,
-        $studentIds,
-        $sortOrder
-    );
-
-    $attendanceRows = supabase_request('GET', 'attendance_logs', $queryParams);
-
-    if (empty($attendanceRows)) {
-        return [];
-    }
-
-    $uniqueStudentIds = [];
-    foreach ($attendanceRows as $row) {
-        $uniqueStudentIds[] = $row['student_id'];
-    }
-
-    $uniqueStudentIds = array_values(array_unique($uniqueStudentIds));
-    $studentsById = get_students_by_ids($uniqueStudentIds);
-
-    $classInfo = get_class_by_id($classId);
-
-    $reportRows = [];
-
-    foreach ($attendanceRows as $row) {
-        $studentId = (string)$row['student_id'];
-        $student = $studentsById[$studentId] ?? [
-            'first_name' => '',
-            'last_name'  => '',
-            'class_id'   => null
-        ];
-
-        $reportRows[] = [
-            'student_id'            => $row['student_id'],
-            'first_name'            => $student['first_name'],
-            'last_name'             => $student['last_name'],
-            'class_id'              => $row['class_id'],
-            'class_name'            => $classInfo['class_name'] ?? '',
-            'scheduled_start_time'  => $classInfo['scheduled_start_time'] ?? '',
-            'detected_at'           => $row['detected_at'],
-            'detected_at_formatted' => format_detected_at($row['detected_at']),
-            'detected_day_key'      => format_detected_day_key($row['detected_at']),
-            'status'                => $row['status'],
-            'status_formatted'      => format_status($row['status']),
-            'confidence_score'      => $row['confidence_score']
-        ];
-    }
-
-    return $reportRows;
 }

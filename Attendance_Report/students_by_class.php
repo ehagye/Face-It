@@ -6,7 +6,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 try {
     $classId = isset($_GET['class_id']) && $_GET['class_id'] !== ''
-        ? (int) $_GET['class_id']
+        ? trim($_GET['class_id'])
         : null;
 
     if ($classId === null) {

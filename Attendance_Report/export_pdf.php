@@ -7,7 +7,11 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 try {
-    $classId = isset($_GET['class_id']) ? (int) $_GET['class_id'] : 1;
+    $classId = isset($_GET['class_id']) && $_GET['class_id'] !== '' ? trim($_GET['class_id']) : '';
+    if ($classId === '') {
+        throw new Exception('Missing class_id');
+    }
+
     $startDate = $_GET['start_date'] ?? null;
     $endDate = $_GET['end_date'] ?? null;
     $sortOrder = $_GET['sort_order'] ?? 'desc';

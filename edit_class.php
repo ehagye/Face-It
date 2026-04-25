@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Missing class_id");
     }
 
-    $class_id = (int) $_POST['class_id'];
+    $class_id = trim($_POST['class_id']);
 
     $updateData = [
         "class_name"           => trim($_POST['class_name']),
         "scheduled_start_time" => trim($_POST['scheduled_start_time']),
     ];
 
-    $ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq.$class_id");
+    $ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq." . urlencode($class_id));
     curl_setopt_array($ch, [
         CURLOPT_CUSTOMREQUEST => "PATCH",
         CURLOPT_RETURNTRANSFER => true,
@@ -58,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (!isset($_GET['class_id']) || $_GET['class_id'] === '') {
     die("Missing class_id");
 }
-$class_id = (int) $_GET['class_id'];
+$class_id = trim($_GET['class_id']);
 
-$ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq.$class_id&select=*");
+$ch = curl_init("$SUPABASE_URL/rest/v1/classes?class_id=eq." . urlencode($class_id) . "&select=*");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER => $baseHeaders,

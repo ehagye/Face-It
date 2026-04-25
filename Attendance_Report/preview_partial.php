@@ -4,7 +4,7 @@ require __DIR__ . '/report_helpers.php';
 
 try {
     $classId = isset($_GET['class_id']) && $_GET['class_id'] !== ''
-        ? (int) $_GET['class_id']
+        ? trim($_GET['class_id'])
         : null;
 
     $startDate = $_GET['start_date'] ?? '';
