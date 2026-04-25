@@ -1,6 +1,18 @@
 /* ==================================================
    FACE-IT MASTER STYLESHEET
    Cleaned + Consolidated
+   Covers:
+   - Global
+   - Layout
+   - Dashboard
+   - Manage Classes
+   - Enroll
+   - Camera UI
+================================================== */
+
+
+/* ==================================================
+   1. GLOBAL RESET + BASE STYLES
 ================================================== */
 
 * {
@@ -21,10 +33,17 @@ body.dark-bg {
     height: 100vh;
 }
 
+
+/* ==================================================
+   2. TYPOGRAPHY
+================================================== */
+
 .gradient-text {
     background: linear-gradient(90deg, #8f8cff, #4fc3ff);
-    background-clip: text;
-    -webkit-background-clip: text;
+
+    background-clip: text;           /* standard */
+    -webkit-background-clip: text;   /* Chrome/Safari */
+
     color: transparent;
 }
 
@@ -42,24 +61,16 @@ body.dark-bg {
     font-weight: bold;
 }
 
-/* TOP BAR */
+
+/* ==================================================
+   3. TOP BAR / NAVIGATION
+================================================== */
+
 .top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 30px;
-    background: rgba(15, 23, 42, 0.95);
-    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-}
-
-.top-bar h1 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-.nav-actions {
-    display: flex;
-    gap: 1rem;
 }
 
 .nav-btn {
@@ -79,6 +90,37 @@ body.dark-bg {
     opacity: 0.95;
 }
 
+.nav-actions button {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.active-nav {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none !important;
+}
+.nav-btn {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    display: inline-block;
+}
+
+.nav-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+
 .manage-btn {
     background: transparent;
     border: 1px solid rgba(255,255,255,0.4);
@@ -87,35 +129,13 @@ body.dark-bg {
     border-radius: 8px;
     text-decoration: none;
     color: white;
-    cursor: pointer;
 }
 
-/* WELCOME SECTION */
-.welcome-section {
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
-    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
-}
 
-.welcome-content h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #f1f5f9;
-    margin: 0 0 0.5rem 0;
-}
+/* ==================================================
+   4. GLASS CARD SYSTEM (Reusable)
+================================================== */
 
-.welcome-content p {
-    font-size: 1rem;
-    color: #cbd5e1;
-    margin: 0;
-}
-
-.professor-name {
-    color: #10b981;
-    font-weight: 600;
-}
-
-/* GLASS CARD */
 .glass-card {
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(14px);
@@ -124,6 +144,7 @@ body.dark-bg {
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
+<<<<<<< HEAD
 .glass-card h3 {
     margin: 0 0 1rem 0;
     font-size: 1.1rem;
@@ -247,6 +268,27 @@ input:focus, select:focus {
 }
 
 /* BUTTONS */
+=======
+
+/* ==================================================
+   5. BUTTON SYSTEM
+================================================== */
+
+button {
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+}
+>>>>>>> parent of 7563cdb (Merge branch 'dashboardalerts')
 .primary-btn,
 .secondary-btn {
     padding: 12px 20px;
@@ -256,7 +298,6 @@ input:focus, select:focus {
     display: inline-block;
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
-    border: none;
 }
 
 .primary-btn {
@@ -273,27 +314,534 @@ input:focus, select:focus {
     opacity: 0.95;
 }
 
-/* WELCOME SECTION */
-.welcome-section {
-    padding: 2rem;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
-    border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+.danger-btn {
+    background: linear-gradient(90deg, #ff6b6b, #ff4d4d);
 }
 
-.welcome-content h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #f1f5f9;
-    margin: 0 0 0.5rem 0;
+.inline-alerts {
+    margin-left: 12px;
+    padding: 6px 12px;
+    font-size: 12px;
+
+    background: linear-gradient(90deg, #6c63ff, #4fc3ff);
+    border-radius: 8px;
+
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+
+    transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.welcome-content p {
-    font-size: 1rem;
-    color: #cbd5e1;
-    margin: 0;
+.inline-alerts:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
 }
 
+<<<<<<< HEAD
 .professor-name {
     color: #10b981;
     font-weight: 600;
+=======
+/* Outline style button (used for Manage Classes in header) */
+.manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.4);
+    padding: 8px 14px;
+    font-size: 13px;
+}
+
+
+/* ==================================================
+   6. FORMS
+================================================== */
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+}
+
+input:focus, select:focus {
+    box-shadow: 0 0 0 2px rgba(79, 195, 255, 0.35);
+}
+
+
+/* ==================================================
+   7. DASHBOARD LAYOUT
+================================================== */
+
+.dashboard {
+    padding: 30px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 25px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.roster {
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 10px;
+}
+
+.log {
+    max-height: 150px;
+    overflow-y: auto;
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   8. MANAGE CLASSES PAGE
+================================================== */
+
+.manage-container {
+    padding: 30px;
+}
+
+.manage-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.manage-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 15px;
+}
+
+.class-table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+}
+
+.class-table th,
+.class-table td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.class-table th {
+    color: #aaa;
+    font-weight: 500;
+}
+
+
+/* ==================================================
+   9. ENROLL PAGE
+================================================== */
+
+.centered-content {
+    display: flex;
+    justify-content: center;
+}
+
+.enroll-card {
+    max-width: 520px;
+    width: 100%;
+}
+
+.enroll-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.full-width {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+
+/* ==================================================
+   10. CAMERA FREEZE UI (Enrollment Page)
+================================================== */
+
+.camera-wrapper {
+    position: relative;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.camera-wrapper video,
+.camera-wrapper canvas {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+/* Transparent green check overlay */
+.success-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 90px;
+    color: rgba(76, 175, 80, 0.85);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+/* ==================================================
+   11. UTILITIES
+================================================== */
+
+.error {
+    display: none;
+    color: #ff6b6b;
+    margin-top: 8px;
+}
+
+.setting {
+    display: block;
+    margin-top: 15px;
+    font-size: 16px;
+}
+
+/* ============================================================
+   Live camera feed on professor dashboard
+   ============================================================ */
+.camera-feed-wrapper {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.camera-feed-wrapper video {
+    width: 100%;
+    border-radius: 8px;
+    display: none;                  /* hidden until camera starts */
+}
+
+.camera-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.camera-controls select {
+    max-width: 180px;
+}
+
+/* ============================================================
+   12. ATTENDANCE REPORT PAGE
+   ============================================================ */
+
+.report-page-grid {
+    align-items: start;
+}
+
+.report-hero-card {
+    margin-bottom: 25px;
+}
+
+.report-filter-card,
+.report-preview-card {
+    min-height: 100px;
+}
+
+.report-form .field {
+    margin-bottom: 18px;
+}
+
+.report-field-note {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.report-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+}
+
+.report-button-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.report-download-btn {
+    min-width: 150px;
+    text-align: center;
+}
+
+.report-download-btn.is-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.report-preview-container {
+    min-height: 220px;
+}
+
+.report-preview-empty,
+.report-preview-loading {
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    color: #aaa;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.report-preview-container h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: white;
+}
+
+.report-preview-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.report-preview-container th,
+.report-preview-container td {
+    padding: 12px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 14px;
+    color: white;
+}
+
+.report-preview-container th {
+    color: #aaa;
+    font-weight: 600;
+    background: rgba(255,255,255,0.05);
+}
+
+.report-preview-container .day-separator td {
+    border-top: 4px solid rgba(79, 195, 255, 0.8) !important;
+}
+
+/* DARKER INPUTS / DROPDOWNS FOR REPORT PAGE */
+.report-form input,
+.report-form select,
+.report-student-search {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.report-form input::placeholder,
+.report-student-search::placeholder {
+    color: #b8b8b8;
+}
+
+.report-form input:focus,
+.report-form select:focus,
+.report-student-search:focus {
+    box-shadow: 0 0 0 2px rgba(79, 195, 255, 0.35);
+    border-color: rgba(79, 195, 255, 0.35);
+}
+
+/* This affects many browsers' dropdown popup area / selected area */
+.report-form select option {
+    background: #2b2f3f;
+    color: white;
+}
+
+/* Optional improvement for calendar picker icon visibility on dark background */
+.report-form input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.9;
+}
+
+.report-student-picker {
+    margin-top: 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    padding: 14px;
+}
+
+.report-student-picker.disabled {
+    opacity: 0.6;
+}
+
+.report-student-search {
+    margin-top: 0 !important;
+    margin-bottom: 10px;
+}
+
+.report-student-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.report-student-actions .manage-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 10px 14px;
+}
+
+.report-student-list {
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    max-height: 240px;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.18);
+}
+
+.report-student-item {
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    cursor: pointer;
+    user-select: none;
+    color: white;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.report-student-item:last-child {
+    border-bottom: none;
+}
+
+.report-student-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.report-student-item.selected {
+    background: rgba(79, 195, 255, 0.22);
+    color: white;
+    font-weight: 600;
+}
+
+.report-student-empty {
+    padding: 14px;
+    color: #aaa;
+}
+
+.report-selected-students {
+    margin-top: 10px;
+    line-height: 1.4;
+}
+
+/* COLUMNS TO INCLUDE: FORCE ONE ROW */
+.report-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+    align-items: stretch;
+}
+
+.report-checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: white;
+    font-weight: 400;
+    overflow: hidden;
+}
+
+.report-checkbox-item input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    flex: 0 0 auto;
+}
+
+.report-checkbox-item span {
+    min-width: 0;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* RESPONSIVE FALLBACKS */
+@media (max-width: 1200px) {
+    .report-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .report-checkbox-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    .report-checkbox-item span {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 900px) {
+    .report-page-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* on smaller screens allow wrapping because forcing one row would get too cramped */
+    .report-checkbox-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .report-checkbox-item span {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        font-size: 12px;
+    }
+>>>>>>> parent of 7563cdb (Merge branch 'dashboardalerts')
 }

@@ -4,7 +4,7 @@
 
 $config = require 'config.php';
 $SUPABASE_URL = $config['SUPABASE_URL'];
-$SUPABASE_SERVICE_ROLE_KEY = $config['SUPABASE_SERVICE_ROLE_KEY'];
+$SUPABASE_KEY = $config['SUPABASE_KEY'];
 
 // --- Validate required fields ---
 if (empty($_POST['student_id']) || empty($_POST['first_name']) || empty($_POST['last_name'])) {
@@ -32,8 +32,8 @@ curl_setopt_array($ch, [
     CURLOPT_POST           => true,
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_HTTPHEADER     => [
-        "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY",
-        "apikey: $SUPABASE_SERVICE_ROLE_KEY",
+        "Authorization: Bearer $SUPABASE_KEY",
+        "apikey: $SUPABASE_KEY",
         "Content-Type: application/json",
         "Prefer: resolution=merge-duplicates,return=minimal"
     ],
@@ -63,8 +63,8 @@ foreach ($faces as $index => $dataUrl) {
         CURLOPT_POST           => true,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER     => [
-            "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY",
-            "apikey: $SUPABASE_SERVICE_ROLE_KEY",
+            "Authorization: Bearer $SUPABASE_KEY",
+            "apikey: $SUPABASE_KEY",
             "Content-Type: image/jpeg"
         ],
         CURLOPT_POSTFIELDS => $imageData
@@ -78,8 +78,8 @@ foreach ($faces as $index => $dataUrl) {
         CURLOPT_POST           => true,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER     => [
-            "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY",
-            "apikey: $SUPABASE_SERVICE_ROLE_KEY",
+            "Authorization: Bearer $SUPABASE_KEY",
+            "apikey: $SUPABASE_KEY",
             "Content-Type: application/json",
             "Prefer: return=minimal"
         ],
