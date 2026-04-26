@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        console.log(`Submitting ${capturedImages.length} captured images...`);
+
         // Add each captured image as a hidden input so it's sent with the POST
         capturedImages.forEach((img, i) => {
             const input = document.createElement("input");
@@ -86,6 +88,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         stopCamera();
-        form.submit();
+        
+        // Use fetch for better error handling instead of form.submit()
+        const formData = new FormData(form);
+        
+        fetch("process_enroll.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log("Server response:", data);
+            if (data.includes("Location:") || data === "") {
+                // PHP redirect successful
+                window.location.href = "enroll.php?success=1";
+            } else if (data.includes("success")) {
+                window.location.href = "enroll.php?success=1";
+            } else {
+                alert("Error: " + data);
+            }
+        })
+        .catch(error => {
+            console.error("Submission error:", error);
+            alert("Network error: " + error);
+        });
     });
 });

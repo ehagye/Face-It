@@ -58,11 +58,9 @@ if (empty($_SESSION['user'])) {
                 <button type="button" onclick="capturePhoto()">Capture</button>
             </div>
 
-            <input type="hidden" id="face_image" name="face_image">
             <p id="camera-status" class="subtitle"></p>
 
             <button class="primary-btn full-width" type="submit">Enroll Student</button>
-            <p class="hint">* Images will be used to train the recognition model</p>
         </form>
     </section>
 </main>
